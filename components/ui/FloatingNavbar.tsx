@@ -1,11 +1,13 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   motion,
   AnimatePresence,
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
+import { useDarkMode } from "@/hook/colorMode";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +22,9 @@ export const FloatingNav = ({
   }[];
   className?: string;
 }) => {
+  const { setDarkMode } = useDarkMode();
+  const router = useRouter();
+  const [role, setRole] = useState("ADMIN");
   const { scrollYProgress } = useScroll();
 
   // set true for the initial state so that nav bar is visible in the hero section
@@ -85,11 +90,15 @@ export const FloatingNav = ({
             <span className=" text-sm !cursor-pointer">{navItem.name}</span>
           </Link>
         ))}
-        {/* remove this login btn */}
-        {/* <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          <span>Login</span>
-          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
-        </button> */}
+        {role === "ADMIN" && (
+          <button
+            className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full"
+            onClick={() => router.push("/write")}
+          >
+            <span>Upload news</span>
+            <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
+          </button>
+        )}
       </motion.div>
     </AnimatePresence>
   );
