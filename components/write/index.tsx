@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import "quill/dist/quill.snow.css";
+import { UploadingPostPayload, uploadPost } from "@/lib/main";
 export default function Writing() {
   useEffect(() => {
     const button = document.getElementById("dropdownSearchButton");
@@ -77,13 +78,24 @@ export default function Writing() {
   }, []);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const data = {
-      content: quillRef.current?.root.innerHTML,
-      title,
-      description,
-      category,
+    const data = quillRef.current?.root.innerHTML;
+
+    const dataSend: UploadingPostPayload = {
+      title: title,
+      author: "admin",
+      file: new File(
+        [new Blob([JSON.stringify(data)], { type: "application/json" })],
+        `${title}.json`
+      ),
     };
-    console.log(data);
+    console.log("File data", data);
+    console.log("Data Send", dataSend);
+    try {
+      const response = await uploadPost(dataSend);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="flex flex-col   z-20 px-10 mt-52 ">
@@ -127,7 +139,7 @@ export default function Writing() {
             className="items-center text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 w-48 h-14 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex justify-center " // Thêm flex, justify-center, items-center vào đây
             type="button"
           >
-            Dropdown search{" "}
+            Chủ đề
             <svg
               className="w-2.5 h-2.5 ms-2.5"
               aria-hidden="true"
@@ -151,7 +163,7 @@ export default function Writing() {
           >
             <div className="w-full">
               <label htmlFor="input-group-search" className="sr-only">
-                Search
+                Tìm kiếm
               </label>
               <div className="relative items-center">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -164,9 +176,9 @@ export default function Writing() {
                   >
                     <path
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                     />
                   </svg>
@@ -293,7 +305,7 @@ export default function Writing() {
   hover:bg-red-400 hover:text-white transition duration-300 ease-in-out text-red-400 h-14 w-48 "
           onClick={handleSubmit}
         >
-          <div className="">Submit</div>
+          <div className=""> Đăng tải </div>
         </button>
       </div>
     </div>
