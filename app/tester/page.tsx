@@ -1,5 +1,5 @@
 import React from "react";
-import Writing from "@/components/write/writing";
+import Test from "@/components/tester";
 import { Metadata } from "next";
 import RootLayout from "../layout";
 
@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 const PatientFormPage = () => {
   return (
-    <RootLayout>
-      <Writing />
-    </RootLayout>
+    <div className="bg-white">
+      <Test />
+    </div>
   );
 };
 
