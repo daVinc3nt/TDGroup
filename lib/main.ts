@@ -5,6 +5,7 @@ import * as JSZip from "jszip";
 export interface UploadingPostPayload {
   title: String;
   author: String;
+  type: Number;
   file: File;
 }
 
@@ -13,11 +14,11 @@ export interface UploadingFilePayload {
 }
 
 export interface GettingPostCriteria {
-  id: String;
-  author: String;
-  title: String;
-  monthCreated: Number;
-  yearCreated: Number;
+  id?: String;
+  author?: String;
+  title?: String;
+  monthCreated?: Number;
+  yearCreated?: Number;
 }
 
 export interface GettingFileCriteria {
@@ -38,7 +39,7 @@ export async function uploadPost(postPayload: UploadingPostPayload) {
     );
     console.log(response);
     return {
-      error: response.data.error,
+      error: response.data.success,
       message: response.data.message,
       data: response.data.data,
     };
@@ -59,24 +60,31 @@ export async function getFile(criteria: GettingFileCriteria) {
     const response: AxiosResponse = await axios.get(
       `http://localhost:3000/v1/media/file?id=${criteria.id}`,
       {
+        withCredentials: true,
         responseType: "arraybuffer",
       }
     );
 
-    const zipFile = await JSZip.loadAsync(response.data);
-    const imageUrls: string[] = [];
+    const blob = new Blob([response.data], {
+      type: response.headers["content-type"],
+    });
+    const imgUrl = URL.createObjectURL(blob);
+    console.log(response);
+    // const data = response.data;
+    return { data: imgUrl };
 
-    await Promise.all(
-      Object.keys(zipFile.files).map(async (filename) => {
-        const file = zipFile.files[filename];
-        const blob = await file.async("blob");
-        const url = URL.createObjectURL(blob);
-        imageUrls.push(url);
-      })
-    );
+    // await Promise.all(
+    //     Object.keys(zipFile.files).map(async (filename) => {
+    //         const file = zipFile.files[filename];
+    //         const blob = await file.async('blob');
+    //         const url = URL.createObjectURL(blob);
+    //         imageUrls.push(url);
+    //     })
+    // );
 
-    return imageUrls;
+    // return imageUrls;
   } catch (error: any) {
+    console.log(error);
     console.error("Error getting file:", error?.response?.data);
     console.error("Request that caused the error: ", error?.request);
     return {
