@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "quill/dist/quill.snow.css";
 import { UploadingPostPayload, uploadPost } from "@/lib/main";
 import NotiPopup from "@/components/ui/NotificationPop";
-
+import Quill from "quill";
 export default function Writing() {
   useEffect(() => {
     const button = document.getElementById("dropdownSearchButton");
@@ -50,7 +50,6 @@ export default function Writing() {
   };
 
   useEffect(() => {
-    const Quill = require("quill");
     if (editorRef.current && !quillRef.current) {
       quillRef.current = new Quill(editorRef.current, {
         theme: "snow",
