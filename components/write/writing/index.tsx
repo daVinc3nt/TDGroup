@@ -1,15 +1,25 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import "quill/dist/quill.snow.css";
-import { UploadingPostPayload, uploadPost } from "@/lib/main";
+import {
+  UploadingPostPayload,
+  uploadPost,
+  uploadImg,
+  login,
+  uploadImg2,
+} from "@/lib/main";
 import NotiPopup from "@/components/ui/NotificationPop";
 import Quill from "quill";
+import ImageResize from "quill-image-resize-module-react";
+import { Delta } from "quill/core";
+import { randomBytes } from "crypto";
+Quill.register("modules/imageResize", ImageResize);
+// Quill.register("modules/handler", handlerModule);
 export default function Writing() {
   useEffect(() => {
     const button = document.getElementById("dropdownSearchButton");
     const dropdown = document.getElementById("dropdownSearch");
 
-    // Đảm bảo rằng dropdown ban đầu được ẩn
     if (dropdown) {
       dropdown.style.display = "none";
     }
@@ -26,79 +36,213 @@ export default function Writing() {
       button.addEventListener("click", toggleDropdown);
     }
 
-    // Dọn dẹp khi component unmount
     return () => {
       if (button) {
         button.removeEventListener("click", toggleDropdown);
       }
     };
   }, []);
+
   const quillRef = useRef<any | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [category, setCategory] = useState(null);
-
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState<number | null>(null);
   const [isOpened, setIsOpened] = useState(false);
   const [message, setMessage] = useState("");
+
   const onClose = () => {
     setIsOpened(false);
   };
+
   const onOpen = (e: any) => {
     setMessage(e);
     setIsOpened(true);
   };
 
   useEffect(() => {
+    const handleImageUpload = () => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+      input.click();
+      input.onchange = async () => {
+        const file = input.files[0];
+        let randomFileName =
+          Math.random().toString(36).substring(2) +
+          Date.now().toString() +
+          ".png";
+        let newFile = new File([file], randomFileName, {
+          type: file.type,
+        });
+
+        let formData = new FormData();
+        formData.append("file", file);
+        const data: uploadImg2 = {
+          file: newFile,
+        };
+        let response = await uploadImg(data);
+        console.log("fileimg", response);
+        if (response?.error === true) {
+          let result = await response.data.pathName;
+          let url = `http://localhost:3001/v1/files?path=${result.replace(
+            /^C:\\temp3\\TienDungCorp-1\\file_server\\uploads\\main\\/,
+            ""
+          )}&option=default`;
+
+          http: console.log(url);
+          let range = quillRef.current.getSelection(true);
+          quillRef.current.insertEmbed(range.index, "image", url);
+        } else {
+          console.error("Failed to upload image");
+        }
+      };
+    };
+    const handleVideoUpload = () => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "video/*";
+      input.click();
+      input.onchange = async () => {
+        const file = input.files[0];
+        let randomFileName =
+          Math.random().toString(36).substring(2) +
+          Date.now().toString() +
+          ".mp4";
+        let newFile = new File([file], randomFileName, {
+          type: file.type,
+        });
+
+        let formData = new FormData();
+        formData.append("file", file);
+        const data: uploadImg2 = {
+          file: newFile,
+        };
+        let response = await uploadImg(data);
+        console.log("fileimg", response);
+        if (response?.error === true) {
+          let result = await response.data.pathName;
+          let url = `http://localhost:3001/v1/files?path=${result.replace(
+            /^C:\\temp3\\TienDungCorp-1\\file_server\\uploads\\main\\/,
+            ""
+          )}&option=default`;
+
+          http: console.log(url);
+          let range = quillRef.current.getSelection(true);
+          quillRef.current.insertEmbed(range.index, "video", url);
+        } else {
+          console.error("Failed to upload image");
+        }
+      };
+    };
+
     if (editorRef.current && !quillRef.current) {
       quillRef.current = new Quill(editorRef.current, {
         theme: "snow",
         modules: {
-          toolbar: [
-            ["bold", "italic", "underline", "strike"], // toggled buttons
-            ["blockquote", "code-block"],
-
-            [{ header: 1 }, { header: 2 }], // custom button values
-            [{ list: "ordered" }, { list: "bullet" }],
-            [{ script: "sub" }, { script: "super" }], // superscript/subscript
-            [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-            [{ direction: "rtl" }], // text direction
-
-            [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-            [{ font: [] }],
-            [{ align: [] }],
-
-            ["clean"], // remove formatting button
-
-            ["link", "image", "video"], // link and image, video
-          ],
+          toolbar: {
+            container: [
+              ["bold", "italic", "underline", "strike"],
+              ["blockquote", "code-block"],
+              [{ header: 1 }, { header: 2 }],
+              [{ list: "ordered" }, { list: "bullet" }],
+              [{ script: "sub" }, { script: "super" }],
+              [{ indent: "-1" }, { indent: "+1" }],
+              [{ direction: "rtl" }],
+              [{ size: ["small", false, "large", "huge"] }],
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ color: [] }, { background: [] }],
+              [{ font: [] }],
+              [{ align: [] }],
+              ["clean"],
+              ["link", "image", "video"],
+            ],
+            handlers: {
+              image: handleImageUpload,
+              video: handleVideoUpload,
+            },
+          },
+          imageResize: {
+            parchment: Quill.import("parchment"),
+            modules: ["Resize", "DisplaySize"],
+          },
         },
       });
+      quillRef.current.root.addEventListener("paste", async (e: any) => {
+        if (e.clipboardData && e.clipboardData.items) {
+          for (let i = 0; i < e.clipboardData.items.length; i++) {
+            if (e.clipboardData.items[i].type.startsWith("image")) {
+              //kiểm tra xem có phải là hình ảnh không
+              console.log(e.clipboardData.items[i].type.startsWith("image"));
+              e.preventDefault(); //ngăn chặn việc dán hình ảnh vào quill
+              e.stopPropagation();
+              let file = e.clipboardData.items[i].getAsFile(); //lấy file hình ảnh
+              if (file) {
+                let randomFileName =
+                  Math.random().toString(36).substring(2) +
+                  Date.now().toString() +
+                  ".png";
+                let newFile = new File([file], randomFileName, {
+                  type: file.type,
+                });
+                let formData = new FormData();
+                formData.append("file", newFile);
+                console.log(formData);
+
+                const data: uploadImg2 = {
+                  file: newFile,
+                };
+                let response = await uploadImg(data);
+                console.log(response);
+                if (response?.error === true) {
+                  let result = await response.data.pathName;
+                  let url = `http://localhost:3001/v1/files?path=${result.replace(
+                    /^C:\\temp3\\TienDungCorp-1\\file_server\\uploads\\main\\/,
+                    ""
+                  )}&option=default`;
+
+                  http: console.log(url);
+                  let range = quillRef.current.getSelection(true);
+                  quillRef.current.insertEmbed(range.index, "image", url);
+                } else {
+                  console.error("Failed to upload image");
+                }
+              }
+            }
+          }
+        }
+      });
     }
-    console.log(quillRef.current);
+
+    console.log(quillRef.current?.root.innerHTML);
   }, []);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const data = quillRef.current?.root.innerHTML;
-
+    const data2 = quillRef.current?.getContents();
     const dataSend: UploadingPostPayload = {
       title: title,
       author: "admin",
-      file: new File(
-        [new Blob([JSON.stringify(data)], { type: "application/json" })],
-        `${title}.json`
-      ),
+      file: new File([data], "content.html", {
+        type: "text/html",
+      }),
       type: category,
     };
-    console.log("File data", data);
-    console.log("Data Send", dataSend);
+    console.log("datasend", dataSend);
+    console.log("data", data);
+    console.log(new File([data], "content.html", { type: "text/html" }));
+    const file = new File([data], "content.html", { type: "text/html" });
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      console.log(event.target.result);
+    };
+    reader.readAsText(file);
     try {
       const response = await uploadPost(dataSend);
       console.log(response);
-      if (response.error.success === false) {
+      if (response?.error?.error === true) {
         onOpen(response.error.message);
         return;
       }
@@ -106,6 +250,14 @@ export default function Writing() {
     } catch (error) {
       console.log(error);
       onOpen("Đã có lỗi xảy ra, vui lòng thử lại sau");
+    }
+  };
+  const login2 = async () => {
+    try {
+      const response = await login("tdadmin", "tdadmin");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -121,7 +273,17 @@ export default function Writing() {
           <span>Back</span>
           <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
         </a>
+        <button
+          className="absolute bg-blue animate-bounce left-5 top-14
+        border text-sm font-medium border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full
+        "
+          onClick={login2}
+        >
+          <span>Login</span>
+          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
+        </button>
       </div>
+
       <div
         className="text-center text-3xl font-bold mb-4  subpixel-antialiased bg-clip-text 
       text-black
@@ -241,7 +403,7 @@ export default function Writing() {
                     htmlFor="checkbox-item-13"
                     className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
                   >
-                    Công nghệ
+                    Hình ảnh
                   </label>
                 </div>
               </li>
@@ -259,7 +421,7 @@ export default function Writing() {
                     htmlFor="checkbox-item-14"
                     className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
                   >
-                    Dịch vụ
+                    Video
                   </label>
                 </div>
               </li>
@@ -277,7 +439,7 @@ export default function Writing() {
                     htmlFor="checkbox-item-15"
                     className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
                   >
-                    Lịch sử
+                    Báo cáo
                   </label>
                 </div>
               </li>
