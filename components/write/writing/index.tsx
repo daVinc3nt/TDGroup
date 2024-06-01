@@ -61,6 +61,7 @@ export default function Writing() {
   };
 
   useEffect(() => {
+    //replace base64 image to url
     const handleImageUpload = () => {
       const input = document.createElement("input");
       input.type = "file";
@@ -98,6 +99,7 @@ export default function Writing() {
         }
       };
     };
+    //replace base64 video to url
     const handleVideoUpload = () => {
       const input = document.createElement("input");
       input.type = "file";
@@ -135,7 +137,6 @@ export default function Writing() {
         }
       };
     };
-
     if (editorRef.current && !quillRef.current) {
       quillRef.current = new Quill(editorRef.current, {
         theme: "snow",
@@ -157,61 +158,84 @@ export default function Writing() {
               ["clean"],
               ["link", "image", "video"],
             ],
-            handlers: {
-              image: handleImageUpload,
-              video: handleVideoUpload,
-            },
+            // handlers: {
+            //   image: handleImageUpload,
+            //   video: handleVideoUpload,
+            // },
           },
           imageResize: {
             parchment: Quill.import("parchment"),
             modules: ["Resize", "DisplaySize"],
+            displayStyles: {
+              backgroundColor: "black",
+              border: "none",
+              color: "white",
+              align: "center",
+            },
           },
         },
       });
-      quillRef.current.root.addEventListener("paste", async (e: any) => {
-        if (e.clipboardData && e.clipboardData.items) {
-          for (let i = 0; i < e.clipboardData.items.length; i++) {
-            if (e.clipboardData.items[i].type.startsWith("image")) {
-              //kiểm tra xem có phải là hình ảnh không
-              console.log(e.clipboardData.items[i].type.startsWith("image"));
-              e.preventDefault(); //ngăn chặn việc dán hình ảnh vào quill
-              e.stopPropagation();
-              let file = e.clipboardData.items[i].getAsFile(); //lấy file hình ảnh
-              if (file) {
-                let randomFileName =
-                  Math.random().toString(36).substring(2) +
-                  Date.now().toString() +
-                  ".png";
-                let newFile = new File([file], randomFileName, {
-                  type: file.type,
-                });
-                let formData = new FormData();
-                formData.append("file", newFile);
-                console.log(formData);
+      // quillRef.current.root.addEventListener(
+      //   "paste",
+      //   async (e: any) => {
+      //     if (e.clipboardData && e.clipboardData.items) {
+      //       for (let i = 0; i < e.clipboardData.items.length; i++) {
+      //         if (e.clipboardData.items[i].type.startsWith("image")) {
+      //           //kiểm tra xem có phải là hình ảnh không
+      //           console.log(e.clipboardData.items[i].type.startsWith("image"));
+      //           e.preventDefault(); //ngăn chặn việc dán hình ảnh vào quill
+      //           e.stopPropagation();
+      //           let file = e.clipboardData.items[i].getAsFile(); //lấy file hình ảnh
+      //           if (file) {
+      //             let randomFileName =
+      //               Math.random().toString(36).substring(2) +
+      //               Date.now().toString() +
+      //               ".png";
+      //             let newFile = new File([file], randomFileName, {
+      //               type: file.type,
+      //             });
+      //             let formData = new FormData();
+      //             formData.append("file", newFile);
+      //             console.log(formData);
 
-                const data: uploadImg2 = {
-                  file: newFile,
-                };
-                let response = await uploadImg(data);
-                console.log(response);
-                if (response?.error === true) {
-                  let result = await response.data.pathName;
-                  let url = `http://localhost:3001/v1/files?path=${result.replace(
-                    /^C:\\temp3\\TienDungCorp-1\\file_server\\uploads\\main\\/,
-                    ""
-                  )}&option=default`;
+      //             const data: uploadImg2 = {
+      //               file: newFile,
+      //             };
+      //             let response = await uploadImg(data);
+      //             console.log(response);
+      //             if (response?.error === true) {
+      //               let result = await response.data.pathName;
+      //               let url = `http://localhost:3001/v1/files?path=${result.replace(
+      //                 /^C:\\temp3\\TienDungCorp-1\\file_server\\uploads\\main\\/,
+      //                 ""
+      //               )}&option=default`;
 
-                  http: console.log(url);
-                  let range = quillRef.current.getSelection(true);
-                  quillRef.current.insertEmbed(range.index, "image", url);
-                } else {
-                  console.error("Failed to upload image");
-                }
-              }
-            }
-          }
-        }
-      });
+      //               http: console.log(url);
+      //               let range = quillRef.current.getSelection(true);
+      //               quillRef.current.insertEmbed(range.index, "image", url);
+      //             } else {
+      //               console.error("Failed to upload image");
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   },
+      //   true
+      // );
+      // quillRef.current.root.addEventListener("keydown", async (e: any) => {
+      //   console.log("keydown event", e.key);
+      //   if (e.key === "Delete" || e.key === "Backspace") {
+      //     const range = quillRef.current.getSelection();
+      //     if (range) {
+      //       const [blot] = quillRef.current.getLeaf(range.index);
+      //       if (blot.domNode.nodeName === "IMG") {
+      //         const imgUrl = blot.domNode.getAttribute("src");
+      //         console.log("An image is being deleted", imgUrl);
+      //       }
+      //     }
+      //   }
+      // });
     }
 
     console.log(quillRef.current?.root.innerHTML);
@@ -219,8 +243,39 @@ export default function Writing() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const data = quillRef.current?.root.innerHTML;
-    const data2 = quillRef.current?.getContents();
+    let data = quillRef.current?.root.innerHTML;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(data, "text/html");
+    const images = doc.querySelectorAll("img");
+
+    //replace base64 image to url
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i];
+      const imgSrc = img.getAttribute("src");
+      console.log("heheheheh", imgSrc);
+      if (imgSrc.startsWith("data:image")) {
+        const response = await fetch(imgSrc);
+        const blob = await response.blob();
+        const newRandomFileName =
+          Math.random().toString(36).substring(2) + Date.now().toString();
+
+        const file = new File([blob], newRandomFileName + ".png", {
+          type: blob.type,
+        });
+        // Now you can use `file` to upload the image
+        const data2: uploadImg2 = {
+          file: file,
+        };
+        let responseUpload = await uploadImg(data2);
+        console.log("fileimg", responseUpload);
+        let result = await responseUpload.data.pathName;
+        let url = `http://localhost:3001/v1/files?path=${result.replace(
+          /^C:\\temp3\\TienDungCorp-1\\file_server\\uploads\\main\\/,
+          ""
+        )}&option=default`;
+        data = data.replace(imgSrc, url);
+      }
+    }
     const dataSend: UploadingPostPayload = {
       title: title,
       author: "admin",
