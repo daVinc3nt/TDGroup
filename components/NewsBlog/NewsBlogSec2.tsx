@@ -2,8 +2,6 @@
 import { motion, useAnimation, useInView } from "framer-motion"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import Posts from "@/app/api/data"
-import { getPosts } from "@/lib/main"
 const Slide = (data:any) => {
   // const [data, setData] = useState(null);
   // useEffect(() => {
