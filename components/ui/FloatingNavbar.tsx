@@ -7,7 +7,6 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-import { useDarkMode } from "@/hook/colorMode";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -22,7 +21,6 @@ export const FloatingNav = ({
   }[];
   className?: string;
 }) => {
-  const { setDarkMode } = useDarkMode();
   const router = useRouter();
   const [role, setRole] = useState("ADMIN");
   const { scrollYProgress } = useScroll();
