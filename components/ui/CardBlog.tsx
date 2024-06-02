@@ -1,7 +1,13 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { FaLocationArrow } from "react-icons/fa6";
-import { getFile, GettingFileCriteria } from "@/lib/main";
+import {
+  getFile,
+  GettingFileCriteria,
+  deleteProject,
+  conditionQueryProject,
+  UploadingFileInfo,
+} from "@/lib/main";
 import { PinContainer } from "./Pin";
 interface PostProps {
   author: string;
@@ -11,22 +17,21 @@ interface PostProps {
   id: string;
   title: string;
   type: any;
+  name: string;
+  reloadFunction: () => Promise<void>;
 }
 const RecentProjects = (projects: PostProps) => {
-  const handlefetchFile = async (e: string) => {
+  const handleDelete = async () => {
+    const result = window.confirm("Bạn có chắc chắn muốn xóa không?");
+    if (!result) return;
     try {
-      const response = await getFile({ id: e });
-
-      console.log("id", e);
+      const response = await deleteProject({
+        project_id: projects.id,
+      });
       console.log(response);
-      if (response.error) {
-        alert("Error fetching file");
-      } else {
-        alert("File fetched successfully");
-        window.open(response.data, "_blank");
-      }
-    } catch (e) {
-      console.log(e);
+      projects.reloadFunction();
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -40,6 +45,16 @@ const RecentProjects = (projects: PostProps) => {
             title="/ui.aceternity.com"
             href="https://twitter.com/mannupaaji"
           >
+            <button
+              className="end-0 self-end
+          bg-red-500 text-white rounded-lg p-2
+          hover:bg-red-600 transition duration-300 ease-in-out
+            
+          "
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
             <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10">
               <div
                 className="relative w-full h-full overflow-hidden lg:rounded-3xl"
@@ -61,7 +76,16 @@ const RecentProjects = (projects: PostProps) => {
                 margin: "1vh 0",
               }}
             >
-              {projects.title}
+              Tiêu đề: {projects.title}
+            </p>
+            <p
+              className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
+              style={{
+                color: "#BEC1DD",
+                margin: "1vh 0",
+              }}
+            >
+              Tác giả: {projects.author}
             </p>
             <p
               className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
@@ -74,17 +98,19 @@ const RecentProjects = (projects: PostProps) => {
               {new Date(projects.date_created).toLocaleDateString()}
             </p>
 
-            <button
+            <a
               className="flex items-center justify-between mt-7 mb-3"
-              onClick={() => handlefetchFile(projects.id)}
+              href={`/specify/${projects.id}/${projects.name}`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <div className="flex justify-center items-center">
                 <p className="flex lg:text-xl md:text-xs text-sm text-purple">
-                  Read more
+                  Xem chi tiết
                 </p>
                 <FaLocationArrow className="ms-3" color="#CBACF9" />
               </div>
-            </button>
+            </a>
           </PinContainer>
         </div>
       </div>
