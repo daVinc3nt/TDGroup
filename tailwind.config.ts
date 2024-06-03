@@ -198,6 +198,17 @@ function addVariablesForColors({ addBase, theme }: any) {
 
   addBase({
     ":root": newVars,
+    ".quill-editor *": {
+      fontSize: "20px", // Sử dụng kích thước mong muốn
+    },
+    ".quill-editor img, .quill-editor video": {
+      display: "block",
+      margin: "auto",
+    },
+    ".quill-editor .ql-video": {
+      display: "flex",
+      justifyContent: "center",
+    },
   });
 }
 

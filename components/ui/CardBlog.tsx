@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { FaLocationArrow } from "react-icons/fa6";
+import { useState, useEffect } from "react";
 import {
   getFile,
   GettingFileCriteria,
@@ -13,7 +14,7 @@ interface PostProps {
   author: string;
   date_created: string;
   date_modified: string;
-  file: string;
+  files: any;
   id: string;
   title: string;
   type: any;
@@ -25,15 +26,35 @@ const RecentProjects = (projects: PostProps) => {
     const result = window.confirm("Bạn có chắc chắn muốn xóa không?");
     if (!result) return;
     try {
+      console.log("hehehehe", projects.id);
       const response = await deleteProject({
         project_id: projects.id,
       });
-      console.log(response);
+      console.log("hehehehe", response);
       projects.reloadFunction();
     } catch (error) {
       console.log(error);
     }
   };
+  const [img, setImg] = useState(null);
+  useEffect(() => {
+    const fetchIMG = async () => {
+      if (projects.files.length <= 1) return;
+      const response = await getFile({
+        project_id: projects.id,
+        file: projects.files[projects.files.length - 1].file,
+      });
+      console.log("id&name", projects.id, projects.name);
+      console.log("Openfile", response);
+      const blobResponse = await fetch(response.data);
+      console.log("blobResponse", blobResponse);
+      // setImg();
+
+      // Lưu URL vào state
+      setImg(response.data);
+    };
+    fetchIMG();
+  }, []);
   return (
     <div className="">
       <div className="flex flex-wrap items-center justify-center p-4 gap-16">
@@ -42,61 +63,76 @@ const RecentProjects = (projects: PostProps) => {
           key={projects.id}
         >
           <PinContainer
-            title="/ui.aceternity.com"
-            href="https://twitter.com/mannupaaji"
+          // title={`/specify/${projects.id}/${projects.name}`}
+          // href={`/specify/${projects.id}/${projects.name}`}
           >
             <button
-              className="end-0 self-end
+              className="
           bg-red-500 text-white rounded-lg p-2
           hover:bg-red-600 transition duration-300 ease-in-out
+          flex end-0 self-end z-20 absolute
             
           "
               onClick={handleDelete}
             >
               Delete
             </button>
-            <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10">
+
+            <a
+              className="relative flex items-center justify-center sm:w-64 w-[50vw] overflow-hidden h-[15vh] lg:h-[20vh] mb-10"
+              href={`/specify/${projects.id}/${projects.name}`}
+              target="_blank"
+            >
               <div
                 className="relative w-full h-full overflow-hidden lg:rounded-3xl"
-                style={{ backgroundColor: "#13162D" }}
+                // style={{ backgroundColor: "#13162D" }}
               >
-                <img src="/bg.png" alt="bgimg" />
+                {!img ? (
+                  <img src="/bg.png" alt="bgimg" />
+                ) : (
+                  <img
+                    src={img}
+                    alt="blobURL"
+                    className="z-10 absolute center object-cover w-full h-full rounded-lg"
+                  />
+                )}
               </div>
-              {/* <img
-                  src={projects.}
-                  alt="cover"
-                  className="z-10 absolute bottom-0"
-                /> */}
-            </div>
+            </a>
 
-            <p
+            <a
               className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
               style={{
                 color: "#BEC1DD",
                 margin: "1vh 0",
               }}
+              href={`/specify/${projects.id}/${projects.name}`}
+              target="_blank"
             >
               Tiêu đề: {projects.title}
-            </p>
-            <p
+            </a>
+            <a
               className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
               style={{
                 color: "#BEC1DD",
                 margin: "1vh 0",
               }}
+              href={`/specify/${projects.id}/${projects.name}`}
+              target="_blank"
             >
               Tác giả: {projects.author}
-            </p>
-            <p
+            </a>
+            <a
               className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
               style={{
                 color: "#BEC1DD",
                 margin: "1vh 0",
               }}
+              href={`/specify/${projects.id}/${projects.name}`}
+              target="_blank"
             >
               Ngày đăng tải{" "}
               {new Date(projects.date_created).toLocaleDateString()}
-            </p>
+            </a>
 
             <a
               className="flex items-center justify-between mt-7 mb-3"
@@ -106,7 +142,7 @@ const RecentProjects = (projects: PostProps) => {
             >
               <div className="flex justify-center items-center">
                 <p className="flex lg:text-xl md:text-xs text-sm text-purple">
-                  Xem chi tiết
+                  Chỉnh sửa
                 </p>
                 <FaLocationArrow className="ms-3" color="#CBACF9" />
               </div>
