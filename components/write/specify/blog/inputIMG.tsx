@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import UploadIcon from "@/components/ui/UploadIcon";
 import {
   uploadFileBelongToProject,
   saveImgDescription,
@@ -96,7 +97,7 @@ const IMGPopUp: React.FC<CreateProps> = ({ onClose, ref, project_id }) => {
     >
       <motion.div
         ref={ref ? ref : notificationRef}
-        className="relative max-w-full min-w-[250px] sm:min-w-[600px] sm:max-w-screen-sm min-h-44 xs:max-h-64  bg-white rounded-xl p-4 flex flex-col"
+        className="relative max-w-full min-w-[250px] sm:min-w-[600px]  min-h-44    rounded-xl p-4 flex flex-col"
         initial={{ scale: 0 }}
         animate={{ scale: isVisible ? 1 : 0 }}
         exit={{ scale: 0 }}
@@ -134,7 +135,7 @@ const IMGPopUp: React.FC<CreateProps> = ({ onClose, ref, project_id }) => {
             />
             <label
               htmlFor="file-upload"
-              className="z-20 flex flex-col-reverse items-center justify-center w-full h-full cursor-pointer"
+              className="z-20 flex flex-col-reverse items-center justify-center w-full h-full cursor-pointer p-5"
             >
               {file && (
                 <img
@@ -148,14 +149,7 @@ const IMGPopUp: React.FC<CreateProps> = ({ onClose, ref, project_id }) => {
                   <p className="z-10 text-xs font-light text-center text-gray-500">
                     Kéo thả hoặc chọn ảnh
                   </p>
-                  <svg
-                    className="z-10 w-8 h-8 text-indigo-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
-                  </svg>
+                  <UploadIcon />
                 </>
               )}
             </label>
@@ -166,7 +160,7 @@ const IMGPopUp: React.FC<CreateProps> = ({ onClose, ref, project_id }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
               transition={{ duration: 0.3 }}
-              className=" mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded truncate"
+              className=" mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-full truncate font-mono"
               onClick={handleUpload}
             >
               Xác nhận

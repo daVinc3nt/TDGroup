@@ -48,7 +48,7 @@ const NotiPopup: React.FC<NotiPopupProps> = ({ onClose, message, ref }) => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 bottom-0 flex backdrop-blur items-center justify-center bg-black bg-opacity-50 z-50 inset-0"
+      className="fixed top-0 left-0 right-0 bottom-0 flex backdrop-blur items-center justify-center bg-white bg-opacity-50 z-50 inset-0"
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
       exit={{ opacity: 0 }}
@@ -57,19 +57,17 @@ const NotiPopup: React.FC<NotiPopupProps> = ({ onClose, message, ref }) => {
     >
       <motion.div
         ref={ref ? ref : notificationRef}
-        className="relative max-w-full min-w-[250px] sm:min-w-[300px] sm:max-w-screen-sm max-h-44 xs:max-h-64 dark:bg-[#111319] bg-white rounded-xl p-4 flex flex-col"
+        className="relative max-w-full min-w-[250px] sm:min-w-[300px] sm:max-w-screen-sm max-h-44 xs:max-h-64  bg-white rounded-xl p-4 flex flex-col"
         initial={{ scale: 0 }}
         animate={{ scale: isVisible ? 1 : 0 }}
         exit={{ scale: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-gray-600 text-xl font-bold mb-2 text-center dark:text-white">
+        <h2 className="text-gray-600 text-xl font-bold mb-2 text-center">
           Thông báo
         </h2>
         <div className="overflow-scroll max-h-full w-full no-scrollbar">
-          <p className="text-gray-600 w-full text-center dark:text-white">
-            {message}
-          </p>
+          <p className="text-gray-600 w-full text-center ">{message}</p>
         </div>
 
         <div className="flex w-full justify-center gap-2">
@@ -77,7 +75,7 @@ const NotiPopup: React.FC<NotiPopupProps> = ({ onClose, message, ref }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.3 }}
-            className=" mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded truncate"
+            className=" mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-full truncate font-mono "
             onClick={handleClose}
           >
             Xác nhận

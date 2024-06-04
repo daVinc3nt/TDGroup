@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import "quill/dist/quill.snow.css";
 import CreatePopUp from "./create";
+import ScrollToTopButton from "@/components/NewsBlog/ScrollToTop";
 import {
   CreatingProject,
   UploadingFileInfo,
@@ -125,7 +126,7 @@ export default function Writing2() {
   }
   const login2 = async () => {
     try {
-      const response = await login("tdadmin", "tdadmin");
+      await login("tdadmin", "tdadmin");
       // console.log(response);
     } catch (error) {
       // console.log(error);
@@ -139,6 +140,7 @@ export default function Writing2() {
   }, [searchType, searchDateStart, searchDateEnd, searchTitle]);
   return (
     <div className="flex flex-col   z-20 px-10 mt-24  bg-white h-full  ">
+      <ScrollToTopButton />
       <div>
         {isOpened && <NotiPopup onClose={onClose} message={message} />}
         <a
@@ -166,7 +168,7 @@ export default function Writing2() {
         <CreatePopUp onClose={onClose2} reFetch={handlefetchPost} />
       )}
       <div className="flex place-content-center">
-        <div className="flex flex-col  bg-white z-20 px-10 w-full h-full ">
+        <div className="flex flex-col  bg-white z-20 px-2 md:px-10 w-full h-full ">
           <div className="flex flex-col  bg-white text-black">
             <div className="flex gap-3 lg:flex-row flex-col">
               <input
@@ -174,7 +176,7 @@ export default function Writing2() {
                 placeholder="Tìm kiếm"
                 value={searchTitle}
                 onChange={(e) => setSearchTitle(e.target.value)}
-                className="bg-white border border-gray-300 rounded-lg px-4 py-2 w-full lg:w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
+                className="bg-white border border-gray-300 rounded-lg px-4 py-2 w-full lg:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
               />
               <div
                 className="
@@ -267,7 +269,7 @@ ${error ? "border-red-500" : "border-gray-300"}
                 </span>
               )}
             </div>
-            <div className="grid grid-cols-3 md:grid-cols-7 gap-5 my-5 border-b-slate-300 border-spacing-2 border-b-2 ">
+            <div className="grid grid-cols-2 md:grid-cols-8 gap-5 my-5 border-b-slate-300 border-spacing-2 border-b-2 ">
               <button
                 onClick={() => handleChangeType(1)}
                 className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
@@ -317,10 +319,18 @@ ${error ? "border-red-500" : "border-gray-300"}
                 Khác
               </button>
               <button
+                onClick={() => handleChangeType(7)}
+                className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
+                ${searchType == 7 ? "bg-gray-200 " : "bg-white"}
+                `}
+              >
+                Dự án
+              </button>
+              <button
                 onClick={() => handleChangeType(null)}
                 className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
                 ${searchType == null ? "bg-gray-200 " : "bg-white"}
-                md:col-span-1 col-span-3
+                md:col-span-1 
                 `}
               >
                 Tất cả
