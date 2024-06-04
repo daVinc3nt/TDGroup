@@ -45,7 +45,6 @@ const NewsBlogSec3 = ({listPost, category, id, title}) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
   const breakpoints = { res1: 1, res2: 2, res3: 3, res4: 5 };
 
   // useEffect(() => {
@@ -82,27 +81,27 @@ const NewsBlogSec3 = ({listPost, category, id, title}) => {
       return (
     <>
       <div id={id}
-        className="h-[350px] sm:px-[4.5rem] px-2 lg:px-[5.5rem] bg-black/70 pb-2"
+        className="h-[350px] sm:px-[4.5rem] px-2 lg:px-[5.5rem] pb-2"
       >
         <motion.section 
           variants={{ hidden: { opacity: 0, x: 20 }, visible: { opacity: 1, x: 0 }}}
           initial="hidden"
           animate={mainControls}
           transition={{ duration: 0.7, delay: 0.25 }}
-          ref={refSec3} className="relative bg-white/90 p-4 rounded-3xl h-full w-full">
+          ref={refSec3} className="relative bg-white p-4 rounded-3xl h-full w-full">
           <div className="flex flex-col mx-auto h-full w-full justify-center items-center">
-            <motion.h1 className="font-bold sm:text-xl lg:text-2xl pt-1 pb-4 text-center lg:text-left w-full lg:pl-4 whitespace-nowrap">
+            <motion.h1 className="font-bold sm:text-xl lg:text-2xl pt-1 pb-4 text-center lg:text-left w-full text-black lg:pl-4 whitespace-nowrap">
               {title}
             </motion.h1>
             <Carousel
               customRightArrow={
                 <ArrowFix className="absolute right-2 top-[53%]">
-                  <TbChevronsRight className="h-8 w-8 text-white text-center rounded-full bg-gray-800 outline outline-[3px] lg:outline-4 outline-white" />
+                  <TbChevronsRight className="h-8 w-8 text-black text-center rounded-full bg-gray-800 outline outline-[3px] lg:outline-4 outline-white" />
                 </ArrowFix>
               }
               customLeftArrow={
                 <ArrowFix className="absolute left-2 top-[53%]">
-                  <TbChevronsLeft className="h-8 w-8 text-white text-center rounded-full bg-gray-800 outline outline-[3px] lg:outline-4 outline-white" />
+                  <TbChevronsLeft className="h-8 w-8 text-black text-center rounded-full bg-gray-800 outline outline-[3px] lg:outline-4 outline-white" />
                 </ArrowFix>
               }
               additionalTransfrom={0} draggable keyBoardControl

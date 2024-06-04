@@ -82,6 +82,19 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        tada: {
+					"0%": { transform: "scale(1)" },
+					"10%": { transform: "scale(0.9) rotate(-3deg)" },
+					"20%": { transform: "scale(0.9) rotate(-3deg)" },
+					"30%": { transform: "scale(1.1) rotate(3deg)" },
+					"40%": { transform: "scale(1.1) rotate(-3deg)" },
+					"50%": { transform: "scale(1.1) rotate(3deg)" },
+					"60%": { transform: "scale(1.1) rotate(-3deg)" },
+					"70%": { transform: "scale(1.1) rotate(3deg)" },
+					"80%": { transform: "scale(1.1) rotate(-3deg)" },
+					"90%": { transform: "scale(1.1) rotate(3deg)" },
+					"100%": { transform: "scale(1) rotate(0)" },
+				},
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -147,7 +160,12 @@ const config = {
           },
         },
       },
+			transitionTimingFunction: {
+				sync: "cubic-bezier(0, 1, 0, 1)",
+			},
       animation: {
+        tada: "tada 1s ease-in-out infinite",
+				tada_once: "tada 1s ease-in-out ",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         spotlight: "spotlight 2s ease .75s 1 forwards",

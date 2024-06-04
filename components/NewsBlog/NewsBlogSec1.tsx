@@ -54,7 +54,7 @@ const NewsBlogSec1 = () => {
 
   return (
     <>
-      <div className="sm:px-[4.5rem] px-2 lg:px-[5.5rem] bg-black/70 pt-20 pb-2">
+      <div className="sm:px-[4.5rem] px-2 lg:px-[5.5rem] pt-20 pb-2">
         <motion.section  
           ref={refSec1}
           variants={{

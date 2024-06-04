@@ -17,7 +17,7 @@ const formatter = new Intl.DateTimeFormat("vi-VN", {
   hour: "numeric",
   minute: "numeric",
   second: "numeric",
-  timeZone: "UTC",
+  timeZone: "Asia/Ho_Chi_Minh",
 });
 
 // Format the date object using the formatter
@@ -47,7 +47,6 @@ const formattedDate = formatter.format(date);
 }
 
 const NewsBlogSec2 = (data:any) => {
-  console.log("hello",data)
   const refSec2 = useRef(null);
   const isInView = useInView(refSec2, {once: true});
   const mainControls = useAnimation();
@@ -63,10 +62,10 @@ const NewsBlogSec2 = (data:any) => {
 
   return (
     <>
-      <div className="h-[450px] sm:px-[4.5rem] px-2 lg:px-[5.5rem] bg-black/70 pb-2">
+      <div className="h-[450px] sm:px-[4.5rem] px-2 lg:px-[5.5rem]  pb-2">
         <section 
           ref = {refSec2}
-          className="relative bg-white/90 p-4 rounded-3xl h-full w-full">
+          className="relative bg-white p-4 rounded-3xl h-full w-full">
           <motion.div 
             variants={{
               hidden: {opacity:0 , y:20},
@@ -76,7 +75,7 @@ const NewsBlogSec2 = (data:any) => {
             animate={mainControls}
             transition={{ duration: .7, delay: .25}}
             className="flex flex-col mx-auto h-full w-full">
-              <h1 className="font-bold text-2xl sm:text-3xl lg:text-4xl pt-0 pb-2 lg:pb-4 text-center">NewsBlog.Blog2.title</h1>
+              <h1 className="font-bold text-2xl sm:text-3xl lg:text-4xl text-black pt-0 pb-2 lg:pb-4 text-center">NewsBlog.Blog2.title</h1>
               { Object.keys(data).length !== 0 && Slide(data.post[0]) }
           </motion.div>
         </section>
