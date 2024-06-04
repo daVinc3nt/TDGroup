@@ -30,36 +30,34 @@ const RecentProjects = (projects: PostProps) => {
       const response = await deleteProject({
         project_id: projects.id,
       });
-      console.log("hehehehe", response);
+      // console.log("hehehehe", response);
       projects.reloadFunction();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const [img, setImg] = useState(null);
   useEffect(() => {
     const fetchIMG = async () => {
-      if (projects.files.length <= 1) return;
-      const response = await getFile({
-        project_id: projects.id,
-        file: projects.files[projects.files.length - 1].file,
-      });
-      console.log("id&name", projects.id, projects.name);
-      console.log("Openfile", response);
-      const blobResponse = await fetch(response.data);
-      console.log("blobResponse", blobResponse);
-      // setImg();
-
-      // Lưu URL vào state
-      setImg(response.data);
+      try {
+        const response = await getFile({
+          project_id: projects.id,
+          file: "default.png",
+        });
+        // console.log("response", response);
+        if (response.status === 404) return;
+        setImg(response.data);
+      } catch (err) {
+        // console.log(err);
+      }
     };
     fetchIMG();
   }, []);
   return (
     <div className="">
-      <div className="flex flex-wrap items-center justify-center p-4 gap-16">
+      <div className="flex flex-wrap items-center justify-center p-2 gap-4">
         <div
-          className="lg:min-h-[32.5rem] h-[25rem] flex items-center justify-center sm:w-96 w-[80vw]"
+          className="lg:min-h-[32.5rem] h-[25rem] flex items-center justify-center sm:w-96 w-[60vw]"
           key={projects.id}
         >
           <PinContainer
@@ -79,7 +77,7 @@ const RecentProjects = (projects: PostProps) => {
             </button>
 
             <a
-              className="relative flex items-center justify-center sm:w-64 w-[50vw] overflow-hidden h-[15vh] lg:h-[20vh] mb-10"
+              className="relative flex items-center justify-center sm:w-48 lg:w-64 w-[40vw] overflow-hidden h-[15vh] lg:h-[20vh] mb-5"
               href={`/specify/${projects.id}/${projects.name}`}
               target="_blank"
             >
