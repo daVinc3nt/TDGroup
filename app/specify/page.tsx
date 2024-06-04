@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 const PatientFormPage = () => {
   return (
-    <RootLayout>
-      <Writing2 />
-    </RootLayout>
+    // <RootLayout>
+    <Writing2 />
+    // </RootLayout>
   );
 };
 
