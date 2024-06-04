@@ -70,9 +70,11 @@
   * {
     @apply border-border !scroll-smooth;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   button {
     @apply active:outline-none;
   }
@@ -81,5 +83,46 @@
 @layer utilities {
   .heading {
     @apply font-bold text-4xl md:text-5xl text-center;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    display: block;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar {
+    -ms-overflow-style: initial;
+    /* IE and Edge */
+    scrollbar-width: inherit;
+    /* Firefox */
+  }
+
+  .left-rounded {
+    position: relative;
+  }
+
+  .left-rounded::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 8px;
+    /* Adjust this value to match the width of the left border */
+    height: 50%;
+    background-color: red;
+    border-bottom-left-radius: 9999px;
+    /* Makes the bottom-left corner fully rounded */
   }
 }

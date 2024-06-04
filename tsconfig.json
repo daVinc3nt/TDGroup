@@ -35,7 +35,8 @@
     "**/*.ts",
     "**/*.tsx",
     "data/siteMetadata.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "app/login"
   ],
   "exclude": [
     "node_modules"
