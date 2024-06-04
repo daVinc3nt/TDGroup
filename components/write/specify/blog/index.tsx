@@ -286,11 +286,13 @@ export default function BlogItem({
         <div>
           <div
             className="text-center text-3xl font-bold mb-4  subpixel-antialiased bg-clip-text 
-      text-blacktext-opacity-90  rounded-xl
+      text-opacity-90  rounded-xl
         border border-white border-spacing-2
+        animate-pulse
+        font-serif
       "
           >
-            Editor
+            Let's write
           </div>
           <div className="border  border-white border-spacing-2 rounded-xl ">
             <div ref={editorRef} className="quill-editor "></div>

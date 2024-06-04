@@ -19,6 +19,7 @@ interface PostProps {
   title: string;
   type: any;
   name: string;
+  description: string;
   reloadFunction: () => Promise<void>;
 }
 const RecentProjects = (projects: PostProps) => {
@@ -107,6 +108,17 @@ const RecentProjects = (projects: PostProps) => {
               target="_blank"
             >
               Tiêu đề: {projects.title}
+            </a>
+            <a
+              className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
+              style={{
+                color: "#BEC1DD",
+                margin: "1vh 0",
+              }}
+              href={`/specify/${projects.id}/${projects.name}`}
+              target="_blank"
+            >
+              Mô tả: {projects.description}
             </a>
             <a
               className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"

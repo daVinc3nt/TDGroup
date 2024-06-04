@@ -52,6 +52,7 @@ export default function Writing2() {
     title: string;
     type: any;
     name: string;
+    description: string;
   }
   //for fetch data
   const [data, setData] = useState<any>([]);
@@ -344,6 +345,7 @@ ${error ? "border-red-500" : "border-gray-300"}
                     title={item.title}
                     type={item.type}
                     name={item.name}
+                    description={item.description}
                     reloadFunction={handlefetchPost}
                   />
                 </div>
