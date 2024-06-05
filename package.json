@@ -16,6 +16,7 @@
     "@react-three/drei": "^9.96.1",
     "@react-three/fiber": "^8.15.14",
     "@sentry/nextjs": "^8.2.1",
+    "@tsparticles/react": "^3.0.0",
     "axios": "^1.6.7",
     "date-fns": "^3.0.6",
     "framer-motion": "^10.16.16",
@@ -37,7 +38,8 @@
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.160.1",
-    "three-globe": "^2.31.0"
+    "three-globe": "^2.31.0",
+    "tsparticles": "^3.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
