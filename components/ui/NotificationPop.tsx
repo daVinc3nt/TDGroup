@@ -28,12 +28,13 @@ const NotiPopup: React.FC<NotiPopupProps> = ({ onClose, message, ref }) => {
         }
       }
     };
+    if (typeof document !== "undefined") {
+      document.addEventListener("mousedown", handleClickOutside);
 
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
   }, [onClose]);
 
   const handleAnimationComplete = () => {

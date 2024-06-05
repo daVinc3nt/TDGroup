@@ -8,6 +8,7 @@ import Experience from "@/components/Experience";
 import RecentProjects from "@/components/RecentProjects";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Sidebar from "@/components/sidebar";
+import GridGlobe from "@/components/ui/GridGlobe";
 
 const Home = () => {
   return (
@@ -23,6 +24,7 @@ const Home = () => {
           <Experience />
           <Approach />
           <Footer />
+
         </div>
       </main>
     </section>

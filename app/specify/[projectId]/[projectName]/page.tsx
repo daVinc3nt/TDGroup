@@ -12,11 +12,9 @@ export default function Test() {
   }
 
   return (
-    <div>
-      <BlogItem
-        project_id={projectId.toString()}
-        fileName={projectName.toString()}
-      />
-    </div>
+    <BlogItem
+      project_id={projectId.toString()}
+      fileName={projectName.toString()}
+    />
   );
 }

@@ -8,6 +8,7 @@ import { BackgroundGradientAnimation } from "./GradientBg";
 import GridGlobe from "./GridGlobe";
 import animationData from "@/data/confetti.json";
 import MagicButton from "../MagicButton";
+import { BsGlobe2 } from "react-icons/bs";
 
 export const BentoGrid = ({
   className,
@@ -31,17 +32,15 @@ export const BentoGrid = ({
 
 export const BentoGridItem = ({
   className,
-
   title,
   description,
   //   remove unecessary things here
   img,
   imgClassName,
   titleClassName,
-  spareImg,
 }: {
   className?: string;
-  
+
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
   img?: string;
@@ -63,11 +62,6 @@ export const BentoGridItem = ({
     },
   };
 
-  const handleCopy = () => {
-    const text = "hsu@jsmastery.pro";
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-  };
 
   return (
     <div
@@ -98,7 +92,8 @@ export const BentoGridItem = ({
         <div
           className={`absolute right-0 -bottom-5`}
         >
-        </div>        
+        </div>
+
         <div
           className={cn(
             titleClassName,
@@ -116,6 +111,7 @@ export const BentoGridItem = ({
           >
             {title}
           </div>
+          <GridGlobe />
         </div>
       </div>
     </div>
