@@ -19,7 +19,6 @@ export default function UploadIcon() {
         strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
-        // Remove the style tag
         <g>
           <circle fill="#01A59C" cx="16" cy="16" r="16"></circle>
           <path

@@ -1,5 +1,4 @@
 import React from "react";
-import Writing from "@/components/write/writing";
 import Writing2 from "@/components/write/specify";
 import { Metadata } from "next";
 import RootLayout from "../layout";

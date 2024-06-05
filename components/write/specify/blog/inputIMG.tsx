@@ -43,12 +43,13 @@ const IMGPopUp: React.FC<CreateProps> = ({ onClose, ref, project_id }) => {
         }
       }
     };
+    if (typeof document !== "undefined") {
+      document.addEventListener("mousedown", handleClickOutside);
 
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
   }, [onClose]);
 
   const handleUpload = async () => {
