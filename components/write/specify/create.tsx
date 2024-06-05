@@ -32,6 +32,7 @@ const CreatePopUp: React.FC<CreateProps> = ({ onClose, ref, reFetch }) => {
       title: title,
       author: author,
       type: type,
+      description: description,
     };
     try {
       const response = await createProject(data);
@@ -97,7 +98,7 @@ const CreatePopUp: React.FC<CreateProps> = ({ onClose, ref, reFetch }) => {
     >
       <motion.div
         ref={ref ? ref : notificationRef}
-        className="relative max-w-full min-w-[250px] sm:min-w-[300px] sm:max-w-screen-sm min-h-44 xs:max-h-64  bg-white border border-black-100 rounded-xl p-4 flex flex-col"
+        className="relative max-w-full min-w-[250px] sm:min-w-[300px] sm:max-w-screen-sm min-h-44 xs:max-h-64  bg-white rounded-xl p-4 flex flex-col"
         initial={{ scale: 0 }}
         animate={{ scale: isVisible ? 1 : 0 }}
         exit={{ scale: 0 }}
@@ -107,7 +108,7 @@ const CreatePopUp: React.FC<CreateProps> = ({ onClose, ref, reFetch }) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.9 }}
           transition={{ duration: 0.3 }}
-          className=" absolute top-0 right-0 py-2 px-4  bg-red-500 hover:bg-red-600 text-white rounded-lg truncate"
+          className=" absolute top-0 right-0 py-2 px-4  bg-red-500 hover:bg-red-600 text-white rounded-full truncate"
           onClick={handleClose}
         >
           X
@@ -129,17 +130,7 @@ const CreatePopUp: React.FC<CreateProps> = ({ onClose, ref, reFetch }) => {
                 Tiêu đề bài viết
               </label>
             </div>
-            <div className="relative h-11 w-full min-w-[50px]">
-              <input
-                type="text"
-                placeholder="Mô tả"
-                onChange={(e) => setDescription(e.target.value)}
-                className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 placeholder:opacity-0 focus:placeholder:opacity-100"
-              />
-              <label className="after:content[''] pointer-events-none absolute left-0  -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:after:scale-x-100 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                Mô tả
-              </label>
-            </div>
+
             <div className="relative h-11 w-full min-w-[50px]">
               <input
                 type="text"
@@ -161,12 +152,23 @@ const CreatePopUp: React.FC<CreateProps> = ({ onClose, ref, reFetch }) => {
                 <option value={3}>Hình ảnh</option>
                 <option value={4}>Video</option>
                 <option value={5}>Báo cáo</option>
+                <option value={7}>Dự án</option>
                 <option value={6}>Khác</option>
               </select>
               <label className="after:content[''] pointer-events-none absolute left-0  -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:after:scale-x-100 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 Chọn chủ đề
               </label>
             </div>
+          </div>
+          <div className="relative h-28  w-full min-w-[50px]">
+            <textarea
+              placeholder="Mô tả"
+              onChange={(e) => setDescription(e.target.value)}
+              className="peer h-full w-full  border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 placeholder:opacity-0 focus:placeholder:opacity-100 overflow-y-scroll no-scrollbar"
+            />
+            <label className="after:content[''] pointer-events-none absolute left-0  -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:after:scale-x-100 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+              Mô tả
+            </label>
           </div>
         </div>
 

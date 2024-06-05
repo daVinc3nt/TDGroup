@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import "quill/dist/quill.snow.css";
 import CreatePopUp from "./create";
+import ScrollToTopButton from "@/components/NewsBlog/ScrollToTop";
 import {
   CreatingProject,
   UploadingFileInfo,
@@ -52,6 +53,7 @@ export default function Writing2() {
     title: string;
     type: any;
     name: string;
+    description: string;
   }
   //for fetch data
   const [data, setData] = useState<any>([]);
@@ -59,7 +61,7 @@ export default function Writing2() {
   const [post, setPost] = useState<PostProps[]>();
   const [searchTitle, setSearchTitle] = useState<string>();
   const [searchType, setSearchType] = useState<number>();
-  const [searchDateStart, setSearchDateStart] = useState<number>(2015);
+  const [searchDateStart, setSearchDateStart] = useState<number>(2024);
   const [searchDateEnd, setSearchDateEnd] = useState<number>(2024);
   const [error, setError] = useState(false);
   useEffect(() => {
@@ -79,24 +81,19 @@ export default function Writing2() {
     if (searchType) {
       data.type = searchType;
     }
-    // if (searchDateStart) {
-    //   data.yearStart = searchDateStart;
-    // }
-    // if (searchDateEnd) {
-    //   data.yearEnd = searchDateEnd;
-    // }
-
+    if (searchDateStart) {
+      data.yearStart = searchDateStart;
+    }
+    if (searchDateEnd) {
+      data.yearEnd = searchDateEnd;
+    }
     const response = await getProjects(data);
-    console.log(searchTitle);
-    console.log(searchType);
-    console.log(searchDateStart);
-    console.log(searchDateEnd);
-    console.log(response);
+    // console.log("dataporject", response);
     setPost(response.data);
   };
 
   //for pagination
-  const [POSTS_PER_PAGE, setPOSTS_PER_PAGE] = useState(1);
+  const [POSTS_PER_PAGE, setPOSTS_PER_PAGE] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastPost = currentPage * POSTS_PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
@@ -129,15 +126,21 @@ export default function Writing2() {
   }
   const login2 = async () => {
     try {
-      const response = await login("tdadmin", "tdadmin");
-      console.log(response);
+      await login("tdadmin", "tdadmin");
+      // console.log(response);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
-
+  const handleChangeType = async (e: number) => {
+    setSearchType(e);
+  };
+  useEffect(() => {
+    handlefetchPost();
+  }, [searchType, searchDateStart, searchDateEnd, searchTitle]);
   return (
     <div className="flex flex-col   z-20 px-10 mt-24  bg-white h-full  ">
+      <ScrollToTopButton />
       <div>
         {isOpened && <NotiPopup onClose={onClose} message={message} />}
         <a
@@ -150,7 +153,7 @@ export default function Writing2() {
             Trở về
           </span>
         </a>
-        {/* <button
+        <button
           className="absolute bg-blue left-5 top-10
         border  border-neutral-200  
          inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white  focus:ring-4 focus:outline-none focus:ring-green-200    "
@@ -159,33 +162,26 @@ export default function Writing2() {
           <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
             Login
           </span>
-        </button> */}
+        </button>
       </div>
+      {isCreating && (
+        <CreatePopUp onClose={onClose2} reFetch={handlefetchPost} />
+      )}
       <div className="flex place-content-center">
-        <div className="flex flex-col  bg-white z-20 px-10 w-full h-full ">
+        <div className="flex flex-col  bg-white z-20 px-2 md:px-10 w-full h-full ">
           <div className="flex flex-col  bg-white text-black">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-40 self-center mb-4
-        "
-              onClick={() => setIsCreating(!isCreating)}
-            >
-              <span> Tạo bài viết mới </span>
-            </button>
-            {isCreating && (
-              <CreatePopUp onClose={onClose2} reFetch={handlefetchPost} />
-            )}
             <div className="flex gap-3 lg:flex-row flex-col">
               <input
                 type="text"
                 placeholder="Tìm kiếm"
                 value={searchTitle}
                 onChange={(e) => setSearchTitle(e.target.value)}
-                className="bg-white border border-gray-300 rounded-lg px-4 py-2 w-full lg:w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
+                className="bg-white border border-gray-300 rounded-lg px-4 py-2 w-full lg:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
               />
               <div
                 className="
-            bg-white border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black
-            flex-row  flex place-content-between
+            bg-white border border-gray-300 rounded-lg md:px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black
+             grid place-content-between grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3
           "
               >
                 <div className="flex justify-center">
@@ -204,16 +200,12 @@ export default function Writing2() {
 ${error ? "border-red-500" : "border-gray-300"}
                     `}
                   >
-                    <option value={2015}>2015</option>
-                    <option value={2016}>2016</option>
-                    <option value={2017}>2017</option>
-                    <option value={2018}>2018</option>
-                    <option value={2019}>2019</option>
-                    <option value={2020}>2020</option>
-                    <option value={2021}>2021</option>
-                    <option value={2022}>2022</option>
-                    <option value={2023}>2023</option>
                     <option value={2024}>2024</option>
+                    <option value={2025}>2025</option>
+                    <option value={2026}>2026</option>
+                    <option value={2027}>2027</option>
+                    <option value={2028}>2028</option>
+                    <option value={2029}>2029</option>
                   </select>
                 </div>
                 <div className="flex justify-center">
@@ -229,16 +221,12 @@ ${error ? "border-red-500" : "border-gray-300"}
 ${error ? "border-red-500" : "border-gray-300"}
                     `}
                   >
-                    <option value={2015}>2015</option>
-                    <option value={2016}>2016</option>
-                    <option value={2017}>2017</option>
-                    <option value={2018}>2018</option>
-                    <option value={2019}>2019</option>
-                    <option value={2020}>2020</option>
-                    <option value={2021}>2021</option>
-                    <option value={2022}>2022</option>
-                    <option value={2023}>2023</option>
                     <option value={2024}>2024</option>
+                    <option value={2025}>2025</option>
+                    <option value={2026}>2026</option>
+                    <option value={2027}>2027</option>
+                    <option value={2028}>2028</option>
+                    <option value={2029}>2029</option>
                   </select>
                 </div>
                 <div className="flex justify-center">
@@ -254,8 +242,7 @@ ${error ? "border-red-500" : "border-gray-300"}
                       setPOSTS_PER_PAGE(parseInt(e.target.value));
                       setCurrentPage(1);
                     }}
-                    className={`bg-white border  rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black  min-w-[50px]
-${error ? "border-red-500" : "border-gray-300"}
+                    className={`bg-white border  rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black  min-w-[50px] border-gray-300}
                     `}
                   >
                     <option value={1}>1</option>
@@ -265,6 +252,15 @@ ${error ? "border-red-500" : "border-gray-300"}
                     <option value={16}>16</option>
                   </select>
                 </div>
+                <div className="flex justify-center">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full self-center w-40
+        "
+                    onClick={() => setIsCreating(!isCreating)}
+                  >
+                    <span> Tạo bài viết mới </span>
+                  </button>
+                </div>
               </div>
               {error && (
                 <span className="text-red-500 font-bold mx-2 self-center">
@@ -273,9 +269,9 @@ ${error ? "border-red-500" : "border-gray-300"}
                 </span>
               )}
             </div>
-            <div className="grid grid-cols-7 gap-5 my-5 h-16 border-b-slate-300 border-spacing-2 border-b-2 ">
+            <div className="grid grid-cols-2 md:grid-cols-8 gap-5 my-5 border-b-slate-300 border-spacing-2 border-b-2 ">
               <button
-                onClick={() => setSearchType(1)}
+                onClick={() => handleChangeType(1)}
                 className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
                 ${searchType == 1 ? "bg-gray-200 " : "bg-white"}
                 `}
@@ -283,7 +279,7 @@ ${error ? "border-red-500" : "border-gray-300"}
                 Tin tức
               </button>
               <button
-                onClick={() => setSearchType(2)}
+                onClick={() => handleChangeType(2)}
                 className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
                 ${searchType == 2 ? "bg-gray-200 " : "bg-white"}
                 `}
@@ -291,7 +287,7 @@ ${error ? "border-red-500" : "border-gray-300"}
                 Sự kiện
               </button>
               <button
-                onClick={() => setSearchType(3)}
+                onClick={() => handleChangeType(3)}
                 className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
                 ${searchType == 3 ? "bg-gray-200 " : "bg-white"}
                 `}
@@ -299,7 +295,7 @@ ${error ? "border-red-500" : "border-gray-300"}
                 Hình ảnh
               </button>
               <button
-                onClick={() => setSearchType(4)}
+                onClick={() => handleChangeType(4)}
                 className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
                 ${searchType == 4 ? "bg-gray-200 " : "bg-white"}
                 `}
@@ -307,7 +303,7 @@ ${error ? "border-red-500" : "border-gray-300"}
                 Video
               </button>
               <button
-                onClick={() => setSearchType(5)}
+                onClick={() => handleChangeType(5)}
                 className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
                 ${searchType == 5 ? "bg-gray-200 " : "bg-white"}
                 `}
@@ -315,7 +311,7 @@ ${error ? "border-red-500" : "border-gray-300"}
                 Tài liệu
               </button>
               <button
-                onClick={() => setSearchType(6)}
+                onClick={() => handleChangeType(6)}
                 className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
                 ${searchType == 6 ? "bg-gray-200 " : "bg-white"}
                 `}
@@ -323,23 +319,30 @@ ${error ? "border-red-500" : "border-gray-300"}
                 Khác
               </button>
               <button
-                onClick={() => setSearchType(null)}
+                onClick={() => handleChangeType(7)}
+                className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
+                ${searchType == 7 ? "bg-gray-200 " : "bg-white"}
+                `}
+              >
+                Dự án
+              </button>
+              <button
+                onClick={() => handleChangeType(null)}
                 className={` text-gray-400 font-bold py-2 px-4 rounded pb-1
                 ${searchType == null ? "bg-gray-200 " : "bg-white"}
+                md:col-span-1 
                 `}
               >
                 Tất cả
               </button>
             </div>
           </div>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handlefetchPost}
-          >
-            Tìm kiếm
-          </button>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+          <div
+            className="flex flex-wrap 
+            justify-center 
+          "
+          >
             {post &&
               currentPosts?.map((item) => (
                 <div key={item.id}>
@@ -352,6 +355,7 @@ ${error ? "border-red-500" : "border-gray-300"}
                     title={item.title}
                     type={item.type}
                     name={item.name}
+                    description={item.description}
                     reloadFunction={handlefetchPost}
                   />
                 </div>

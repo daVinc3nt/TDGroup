@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import "quill/dist/quill.snow.css";
+import parse from "html-react-parser";
+import SvgComponent from "@/components/ui/BlogIcon";
 import {
   uploadFileBelongToProject,
   UploadingFileInfo,
@@ -12,8 +14,11 @@ import NotiPopup from "@/components/ui/NotificationPop";
 import Quill from "quill";
 import ImageResize from "quill-image-resize-module-react";
 import { useParams } from "next/navigation";
+import { Scroll } from "@react-three/drei";
+import ScrollToTopButton from "@/components/NewsBlog/ScrollToTop";
+
 Quill.register("modules/imageResize", ImageResize);
-// Quill.register("modules/handler", handlerModule);
+
 export default function BlogItem({
   project_id,
   fileName,
@@ -24,6 +29,7 @@ export default function BlogItem({
   const params = useParams<{ tag: string; item: string }>();
   console.log("hahaha", params);
   const [HTML, setHTML] = useState("");
+  const [editorContent, setEditorContent] = useState("");
   useEffect(() => {
     const fetchFile = async () => {
       const response = await getFile({
@@ -39,6 +45,7 @@ export default function BlogItem({
     };
     fetchFile();
   }, []);
+
   useEffect(() => {
     const button = document.getElementById("dropdownSearchButton");
     const dropdown = document.getElementById("dropdownSearch");
@@ -68,6 +75,10 @@ export default function BlogItem({
 
   const quillRef = useRef<any | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
+
+  const view = useRef<any | null>(null);
+  const viewRef = useRef<HTMLDivElement | null>(null);
+
   const [isOpened, setIsOpened] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -79,6 +90,34 @@ export default function BlogItem({
     setMessage(e);
     setIsOpened(true);
   };
+
+  useEffect(() => {
+    if (viewRef.current && HTML) {
+      viewRef.current.innerHTML = HTML;
+      console.log("viewRef", viewRef.current.innerHTML);
+      view.current = new Quill(viewRef.current, {
+        theme: "snow",
+        readOnly: true,
+        // Comment out or remove the modules attribute to remove the toolbar
+        modules: {
+          toolbar: false,
+          imageResize: {
+            parchment: Quill.import("parchment"),
+            modules: ["Resize", "DisplaySize"],
+            displayStyles: {
+              backgroundColor: "black",
+              border: "none",
+              color: "white",
+              align: "center",
+              margin: "0px",
+            },
+          },
+        },
+      });
+      view.current.clipboard.dangerouslyPasteHTML(HTML);
+      console.log("Initialized Quill", view.current);
+    }
+  }, [HTML]);
 
   useEffect(() => {
     // replace base64 image to url
@@ -121,7 +160,7 @@ export default function BlogItem({
         }
       };
     };
-
+    if (typeof window === "undefined") return;
     if (editorRef.current && !quillRef.current) {
       quillRef.current = new Quill(editorRef.current, {
         theme: "snow",
@@ -164,8 +203,21 @@ export default function BlogItem({
       // Set the default content
       quillRef.current.clipboard.dangerouslyPasteHTML(HTML);
       console.log("Initialized Quill", quillRef.current);
+      quillRef.current.on("text-change", function (delta, oldDelta, source) {
+        if (source === "user") {
+          setEditorContent(quillRef.current.root.innerHTML);
+        }
+      });
     }
   }, [HTML]);
+  useEffect(() => {
+    if (viewRef.current && editorContent) {
+      viewRef.current.innerHTML = editorContent;
+      if (view.current) {
+        view.current.clipboard.dangerouslyPasteHTML(editorContent);
+      }
+    }
+  }, [editorContent]);
   useEffect(() => {
     if (HTML && quillRef.current) {
       quillRef.current.clipboard.dangerouslyPasteHTML(HTML);
@@ -219,52 +271,83 @@ export default function BlogItem({
 
   return (
     <div className="flex flex-col justify-center place-content-center   z-20 px-10 mt-24 ">
+      <ScrollToTopButton />
       <div>
         {isOpened && <NotiPopup onClose={onClose} message={message} />}
         <a
           className="absolute bg-blue left-5 top-5
         border  border-neutral-200  
-         inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white  focus:ring-4 focus:outline-none focus:ring-green-200    "
+         inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white  focus:ring-4 focus:outline-none focus:ring-green-200    "
           href="/specify"
         >
-          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+          <span className="relative px-2 py-2.5 transition-all ease-in duration-75 bg-white  rounded-full group-hover:bg-opacity-0">
             Trở về
           </span>
         </a>
       </div>
 
-      <div
-        className="text-center text-3xl font-bold mb-4  subpixel-antialiased bg-clip-text 
+      <div className="grid grid-cols-1 gap-2">
+        <div>
+          <div className="flex justify-center place-items-center gap-3 animate-pulse">
+            <div
+              className="text-center text-3xl font-bold   subpixel-antialiased bg-clip-text 
+      text-opacity-90  rounded-xl
+        border border-white border-spacing-2
+
+        font-serif
+      "
+            >
+              Let's write
+            </div>
+            <SvgComponent />
+          </div>
+          <div
+            className="flex justify-center mt-3
+            text-opacity-90  font-mono
+          "
+          >
+            Tên bài viết : <span> &nbsp;{`" ${fileName} "`}</span>
+          </div>
+          <div className="border  border-white border-spacing-2 rounded-xl mt-4 ">
+            <div ref={editorRef} className="quill-editor "></div>
+          </div>
+        </div>
+        {/* <div>
+          <div
+            className="text-center text-3xl font-bold mb-4  subpixel-antialiased bg-clip-text 
       text-blacktext-opacity-90  rounded-xl
         border border-white border-spacing-2
       "
-      >
-        Viết bài viết
+          >
+            View
+          </div>
+          <div ref={viewRef}></div>
+        </div> */}
       </div>
-      <div className="border  border-white border-spacing-2 rounded-xl ">
-        <div ref={editorRef} className="quill-editor "></div>
-      </div>
-
       {imgOpen && (
         <IMGPopUp onClose={imgCloseHandler} project_id={project_id} />
       )}
-      <div className="w-full flex justify-center mt-4">
-        <button
-          className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white focus:ring-4 focus:outline-none "
-          onClick={imgOpenHandler}
-        >
-          <span className="relative px-10 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
-            Thêm ảnh
-          </span>
-        </button>
-        <button
-          className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white focus:ring-4 focus:outline-none "
-          onClick={handleSave}
-        >
-          <span className="relative px-10 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
-            Lưu{" "}
-          </span>
-        </button>
+      <div className="w-full flex flex-col mt-4">
+        <div className="w-full justify-center flex">
+          <button
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white focus:ring-4 focus:outline-none "
+            onClick={imgOpenHandler}
+          >
+            <span className="relative px-10 py-2.5 transition-all ease-in duration-75 bg-white  rounded-full group-hover:bg-opacity-0">
+              Thêm ảnh hiển thị trên trang chủ
+            </span>
+          </button>
+        </div>
+        <div className="w-full justify-center flex">
+          <button
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white focus:ring-4 focus:outline-none "
+            onClick={handleSave}
+          >
+            <span className="relative px-10 py-2.5 transition-all ease-in duration-75 bg-white  rounded-full group-hover:bg-opacity-0">
+              Lưu{" "}
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   );
