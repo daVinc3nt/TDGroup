@@ -13,10 +13,10 @@ const Home = () => {
   return (
     <section className="flex w-full h-full">
       <Sidebar />
-      <main className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto px-5 w-full">
+      <main className="relative flex justify-center items-center flex-col overflow-hidden mx-auto px-5 w-full">
         <div className="max-w-7xl w-full">
           <FloatingNav />
-          <Hero />
+          {/* <Hero /> */}
           <Grid />
           <RecentProjects />
           <Clients />

@@ -15,11 +15,11 @@ type Props = {
 };
 
 export default function SidebarProvider({ children }: Props) {
-    const [openSidebar, setOpenSidebar] = useState<boolean>(true);
+    const [openSidebar, setOpenSidebar] = useState<boolean>(false);
 
     useEffect(() => {
         window.addEventListener("resize", () =>
-            window.innerWidth < 1200 ? setOpenSidebar(false) : setOpenSidebar(true)
+            window.innerWidth < 1200 ? setOpenSidebar(false) : setOpenSidebar(false)
         );
 
         return () => {

@@ -186,6 +186,7 @@ const AuthPage: FC<Props> = () => {
                   containerClass="flex h-full w-full"
                   rewind={true}
                   pauseOnHover={false}
+                  infinite
                   rewindWithAnimation={true}
                   arrows={false}
                   transitionDuration={1000}
