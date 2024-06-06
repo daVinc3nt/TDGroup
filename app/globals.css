@@ -85,6 +85,7 @@
   }
 }
 
+
 @layer utilities {
   .heading {
     @apply font-bold text-4xl md:text-5xl text-center;
@@ -95,5 +96,21 @@
     /* Thay đổi màu nền của tag input */
     color: #F0F0F0;
     /* Thay đổi màu chữ của tag input */
+  }
+
+  .wellcome {
+    @apply relative text-slate-300 uppercase
+  }
+
+  .wellcome2 {
+    @apply relative text-slate-300 uppercase
+  }
+
+  .wellcome::before {
+    @apply content-['Tien_Dung'] absolute text-green-400 border-r-2 border-green-400 w-0 h-[100%] overflow-hidden animate-animate
+  }
+
+  .wellcome2::before {
+    @apply content-['CORP'] absolute text-red-500 border-r-2 border-green-400 w-0 h-[100%] overflow-hidden animate-animate
   }
 }

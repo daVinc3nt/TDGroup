@@ -22,7 +22,7 @@ export const FloatingNav = ({
   const [role, setRole] = useState("ADMIN");
   const { scrollYProgress } = useScroll();
   const navItems = [
-    { name: "Về TDLogistics", link: "/" },
+    { name: "Về chúng tôi", link: "/" },
     { name: "Dự án", link: "#projects" },
     { name: "Ngành nghề", link: "#testimonials" },
     { name: "Tin tức", link: "/news", hasDropdown: role == "ADMIN" ? true : false },

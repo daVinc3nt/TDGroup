@@ -83,6 +83,11 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        animate: {
+            '70%, 80%, 90%' :{
+            width:'100%'
+            }
+        },
         tada: {
 					"0%": { transform: "scale(1)" },
 					"10%": { transform: "scale(0.9) rotate(-3deg)" },
@@ -165,6 +170,7 @@ const config = {
 				sync: "cubic-bezier(0, 1, 0, 1)",
 			},
       animation: {
+        animate:'animate 6s linear infinite',
         tada: "tada 1s ease-in-out infinite",
 				tada_once: "tada 1s ease-in-out ",
         "accordion-down": "accordion-down 0.2s ease-out",

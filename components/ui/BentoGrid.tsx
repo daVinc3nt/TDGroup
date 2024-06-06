@@ -111,7 +111,6 @@ export const BentoGridItem = ({
           >
             {title}
           </div>
-          <GridGlobe />
         </div>
       </div>
     </div>
