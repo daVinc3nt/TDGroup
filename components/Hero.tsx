@@ -9,8 +9,20 @@ import { TextGenerateEffect } from "./ui/TextGenerateEffect";
 import Carousel from "react-multi-carousel";
 import { Player } from "@lottiefiles/react-lottie-player";
 const Hero = () => {
+  const handleButtonClick = () => {
+    const heightInput = document.getElementById("career");
+    if (heightInput) {
+      const elementPosition = heightInput.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - 150; // Adjust scroll position by -100px
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
   return (
-    <div className="pb-20 pt-36 h-dvh flex justify-end">
+    <div className="pb-20 pt-36 h-dvh flex justify-end overflow-clip">
       {/**
        *  UI: Spotlights
        *  Link: https://ui.aceternity.com/components/spotlight
@@ -24,8 +36,8 @@ const Hero = () => {
        *  0.2 to 0.03
        */}
       <div
-        className="h-screen w-full bg-black-100 
-       absolute top-0 left-0 flex items-center justify-center"
+        className="h-dvh w-full bg-grid-red-300/[0.1]
+       absolute top-0 left-0 flex items-center justify-center overflow-clip"
       >
         <div
           // change the bg to bg-black-100, so it matches the bg color and will blend in
@@ -34,21 +46,20 @@ const Hero = () => {
         />
       </div>
 
-      <div className="flex justify-center relative my-20 z-10 w-full gap-4">
-        <div className="relative w-full h-full flex justify-center place-items-center z-50">
-          {/* Circle Segments */}
-          {/* <motion.div
-            className="h-96 w-96 border-r-4 overflow-clip border-b-4 border-red-500"
-            initial={{ opacity: 0, scale: 0.7, rotate: 0 }}
-            animate={{ opacity: 1, scale: 1, rotate: 360 }}
-            transition={{ duration: 1, ease: "linear" }}
+      <div className="flex justify-center relative my-20 z-10 w-full flex-col md:flex-row">
+        <div className="relative w-full h-full flex justify-center place-items-center">
+          <motion.div
+            className="h-60 w-60 md:h-80 md:w-80 lg:h-96 lg:w-96 border-r-4 overflow-clip border-b-4 border-red-500"
+            initial={{ opacity: 0, scale: 0.5, rotate: 180 }}
+            animate={{ opacity: 1, scale: 1, rotate: 370 }}
+            transition={{ duration: 2, ease: "linear" }}
             style={{ borderBottomLeftRadius: "50%", borderTopRightRadius: "40%" }}
           >
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, ease: "linear" }}
-              className="relative w-full h-full" >
+              initial={{ opacity: 0, rotate: 350 }}
+              animate={{ opacity: 1, rotate: 350 }}
+              transition={{ delay: 1.5, duration: 1, ease: "linear" }}
+              className="relative w-[17rem] md:w-[22rem] lg:w-[26rem] h-full mt-8" >
               <Carousel
                 additionalTransfrom={0}
                 draggable={false}
@@ -74,15 +85,7 @@ const Hero = () => {
                 arrows={false}
                 transitionDuration={1000}
               >
-                <div className="h-96">
-                  <Image
-                    src={"/img/auth/person1.png"}
-                    alt={`Image`}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-                <div className="h-96">
+                <div className="h-60 w-60 md:h-80 md:w-80 lg:h-96 lg:w-96 rotate-[20]">
                   <Image
                     src={"/img/auth/person2.png"}
                     alt={`Image`}
@@ -90,7 +93,15 @@ const Hero = () => {
                     objectFit="cover"
                   />
                 </div>
-                <div className="h-96">
+                <div className="h-60 w-60 md:h-80 md:w-80 lg:h-96 lg:w-96">
+                  <Image
+                    src={"/img/auth/person1.png"}
+                    alt={`Image`}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
+                <div className="h-60 w-60 md:h-80 md:w-80 lg:h-96 lg:w-96">
                   <Image
                     src={"/img/auth/person3.png"}
                     alt={`Image`}
@@ -100,49 +111,41 @@ const Hero = () => {
                 </div>
               </Carousel>
             </motion.div>
-          </motion.div> */}
-          <Player
-            src='/animation/globe.json'
-            className="player"
-            loop
-            autoplay
-            style={{ height: '1000px', width: '1000px' }}
+          </motion.div>
 
-          />
         </div>
-        <div className="max-w-[89vw] md:max-w-2xl lg:min-w-[45vw] flex flex-col justify-center">
-          <div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="uppercase tracking-widest text-xs text-center md:text-left text-gray-300 w-full"
-            >
-              Thay đổi theo cách của bạn
-            </motion.p>
-
-            {/**
-             *  Link: https://ui.aceternity.com/components/text-generate-effect
-             *
-             *  change md:text-6xl, add more responsive code
-             */}
-            <TextGenerateEffect
-              words="Sáng tạo vì con người"
-              className="text-center text-white md:text-left text-[40px] md:text-5xl lg:text-6xl w-full "
-            />
-          </div>
-          <motion.a
-            href="#about"
+        <div className="w-full md:min-w-55vw] lg:min-w-[45vw] flex flex-col justify-center mt-10 md:mt-0">
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
+            className="uppercase tracking-widest text-xs text-center md:text-left text-gray-800 w-full"
+          >
+            TDLogistics - Thật tuyệt khi được là chính mình
+          </motion.p>
+          <TextGenerateEffect
+            words="NGÀNH NGHỀ"
+            className="text-center md:text-left text-[40px] md:text-5xl lg:text-6xl w-full font-bold"
+          />
+
+          <TextGenerateEffect
+            words="Sáng tạo, phát triển vì con người"
+            className="text-center uppercase md:text-left tracking-widest mb-4 text-sm md:text-lg lg:text-[26px] text-gray-800 -mt-4 whitespace-nowrap font-medium"
+          />
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="flex justify-center md:justify-start -mt-4"
           >
             <MagicButton
               title="Tìm hiểu thêm"
               icon={<FaLocationArrow />}
               position="left"
+              handleClick={handleButtonClick}
             />
-          </motion.a>
+          </motion.div>
         </div>
       </div>
     </div>

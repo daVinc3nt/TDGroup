@@ -84,7 +84,7 @@ const RecentProjects = (projects: PostProps) => {
             >
               <div
                 className="relative w-full h-full overflow-hidden lg:rounded-3xl"
-                // style={{ backgroundColor: "#13162D" }}
+              // style={{ backgroundColor: "#13162D" }}
               >
                 {!img ? (
                   <img src="/bg.png" alt="bgimg" />
@@ -151,7 +151,7 @@ const RecentProjects = (projects: PostProps) => {
               rel="noopener noreferrer"
             >
               <div className="flex justify-center items-center">
-                <p className="flex lg:text-xl md:text-xs text-sm text-purple">
+                <p className="flex lg:text-xl md:text-xs text-sm text-red-500">
                   Chỉnh sửa
                 </p>
                 <FaLocationArrow className="ms-3" color="#CBACF9" />

@@ -1,6 +1,6 @@
 "use client";
 import Grid from "@/components/Grid";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/footer";
 import Clients from "@/components/Clients";
 import Approach from "@/components/Approach";
 import Experience from "@/components/Experience";
@@ -8,7 +8,6 @@ import RecentProjects from "@/components/RecentProjects";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Sidebar from "@/components/sidebar";
 import Hero from "@/components/Hero/Hero";
-import GridGlobe from "@/components/ui/GridGlobe";
 
 const Home = () => {
   return (
@@ -21,7 +20,7 @@ const Home = () => {
         <Grid />
         <RecentProjects />
         <Clients />
-        <Experience />
+        {/* <Experience /> */}
         <Approach />
         <Footer />
       </main>

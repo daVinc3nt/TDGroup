@@ -71,7 +71,7 @@ export default async function News() {
     {
       id: 3,
       title: "Sự kiện",
-      description: "I constantly try to improve",
+      description: "",
       className: "lg:col-span-2 md:col-span-3 md:row-span-2",
       imgClassName: "",
       titleClassName: "justify-center",
@@ -91,7 +91,7 @@ export default async function News() {
     {
       id: 5,
       title: "Video",
-      description: "The Inside Scoop",
+      description: "",
       className: "md:col-span-3 md:row-span-2",
       imgClassName: "absolute right-0 bottom-0 md:w-96 w-60",
       titleClassName: "justify-center md:justify-start lg:justify-center",
@@ -112,6 +112,7 @@ export default async function News() {
   return (
     <div className="relative w-full bg-red-800 overflow-y-auto">
       <NewsBlogSec1 />
+
       <NewsBlogSec2 post={post} />
       {newsCategories.map(({ title, category, id }) => (
         <NewsBlogSec3 listPost={post} key={id} title={title} category={category} id={id} />

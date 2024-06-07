@@ -13,12 +13,12 @@ const cursorVariants = {
   }
 };
 
-export default function CursorBlinker(prop: {size: string}) {
+export default function CursorBlinker(prop: { size: string }) {
   return (
     <motion.div
       variants={cursorVariants}
       animate="blinking"
-      className={`inline-block w-[3px] translate-y-1 bg-white h-${prop.size}`}
+      className={`inline-block w-[3px] translate-y-1 bg-black h-${prop.size}`}
     />
   );
 }

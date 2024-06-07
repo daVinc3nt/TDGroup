@@ -24,7 +24,7 @@ export const FloatingNav = ({
   const navItems = [
     { name: "Về chúng tôi", link: "/" },
     { name: "Dự án", link: "#projects" },
-    { name: "Ngành nghề", link: "#testimonials" },
+    { name: "Ngành nghề", link: "/career" },
     { name: "Tin tức", link: "/news", hasDropdown: role == "ADMIN" ? true : false },
   ];
   const [search, setSearch] = useState("");

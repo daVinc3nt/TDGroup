@@ -89,7 +89,7 @@ const ParticlesBackground = (props: any) => {
   };
 
   return (
-    <div className="z-[-2]">
+    <div>
       {init && particlesOptions && (
         //@ts-ignore
         <Particles id={props.id} init={particlesLoaded} options={particlesOptions} />
