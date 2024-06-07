@@ -1,22 +1,14 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import "quill/dist/quill.snow.css";
-import parse from "html-react-parser";
 import SvgComponent from "@/components/ui/BlogIcon";
-import {
-  uploadFileBelongToProject,
-  UploadingFileInfo,
-  savePost,
-  getFile,
-} from "@/lib/main";
+import { UploadingFileInfo, savePost, getFile } from "@/lib/main";
 import IMGPopUp from "./inputIMG";
 import NotiPopup from "@/components/ui/NotificationPop";
 import { Quill } from "react-quill";
 import ImageResize from "quill-image-resize-module-react";
-import { useParams } from "next/navigation";
-import { Scroll } from "@react-three/drei";
 import ScrollToTopButton from "@/components/NewsBlog/ScrollToTop";
-
+import ProjectSkeleton from "@/components/ui/BlogSkeleton";
 Quill.register("modules/imageResize", ImageResize);
 
 export default function BlogItem({
@@ -185,29 +177,31 @@ export default function BlogItem({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    viewRef.current.innerHTML = editorRef.current.innerHTML;
-    if (viewRef.current) {
-      quillRef2.current = new Quill(viewRef.current, {
-        theme: "snow",
-        readOnly: true,
-        modules: {
-          toolbar: false,
-          imageResize: {
-            parchment: Quill.import("parchment"),
-            modules: ["Resize", "DisplaySize"],
-            displayStyles: {
-              backgroundColor: "black",
-              border: "none",
-              color: "white",
-              align: "center",
-              margin: "0px",
+    if (editorRef.current) {
+      viewRef.current.innerHTML = editorRef.current.innerHTML;
+      if (viewRef.current) {
+        quillRef2.current = new Quill(viewRef.current, {
+          theme: "snow",
+          readOnly: true,
+          modules: {
+            toolbar: false,
+            imageResize: {
+              parchment: Quill.import("parchment"),
+              modules: ["Resize", "DisplaySize"],
+              displayStyles: {
+                backgroundColor: "black",
+                border: "none",
+                color: "white",
+                align: "center",
+                margin: "0px",
+              },
             },
           },
-        },
-      });
-      // quillRef2.current.clipboard.dangerouslyPasteHTML(
-      //   editorRef.current.innerHTML
-      // );
+        });
+        // quillRef2.current.clipboard.dangerouslyPasteHTML(
+        //   editorRef.current.innerHTML
+        // );
+      }
     }
   }, [editorContent, HTML]);
 
@@ -277,47 +271,51 @@ export default function BlogItem({
           </a>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 h-full">
-          <div className="h-full">
-            <div className="flex justify-center place-items-center gap-3 animate-pulse">
-              <div
-                className="text-center text-3xl font-bold   subpixel-antialiased bg-clip-text 
+        {HTML === "" ? (
+          <ProjectSkeleton />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 h-full">
+            <div className="h-full">
+              <div className="flex justify-center place-items-center gap-3 animate-pulse">
+                <div
+                  className="text-center text-3xl font-bold   subpixel-antialiased bg-clip-text 
               text-opacity-90  rounded-xl border border-white border-spacing-2 font-serif
               "
-              >
-                Let&apos;s write
+                >
+                  Let&apos;s write
+                </div>
+                <SvgComponent />
               </div>
-              <SvgComponent />
-            </div>
-            <div
-              className="flex justify-center mt-3
+              <div
+                className="flex justify-center mt-3
             text-opacity-90  font-mono
           "
-            >
-              Tên bài viết : <span> &nbsp;{`" ${fileName} "`}</span>
+              >
+                Tên bài viết : <span> &nbsp;{`" ${fileName} "`}</span>
+              </div>
+              <div className="  rounded-xl mt-4 min-h-96 ">
+                <div ref={editorRef} className="quill-editor  "></div>
+              </div>
             </div>
-            <div className="  rounded-xl mt-4 min-h-96 ">
-              <div ref={editorRef} className="quill-editor  "></div>
-            </div>
-          </div>
-          <div className="min-h-96 mt-16">
-            <div
-              className="text-center text-3xl font-bold mb-4  subpixel-antialiased bg-clip-text 
+            <div className="min-h-96 mt-16 hidden md:block">
+              <div
+                className="text-center text-3xl font-bold mb-4  subpixel-antialiased bg-clip-text 
       text-blacktext-opacity-90  rounded-xl
       font-serif
       "
-            >
-              View
-            </div>
+              >
+                View
+              </div>
 
-            <div ref={viewRef} className="quill-editor min-h-96"></div>
+              <div ref={viewRef} className="quill-editor min-h-96"></div>
+            </div>
           </div>
-        </div>
+        )}
         {imgOpen && (
           <IMGPopUp onClose={imgCloseHandler} project_id={project_id} />
         )}
       </div>
-      <div className="fixed right-5  top-[calc(100%-7.5rem)]  lg:translate-x-0">
+      <div className="fixed right-1/2  top-[calc(100%-7.5rem)]  transform translate-x-1/2 ">
         <div className="w-full justify-center flex">
           <button
             className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white focus:ring-4 focus:outline-none "

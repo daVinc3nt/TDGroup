@@ -87,7 +87,9 @@ const RecentProjects = (projects: PostProps) => {
               // style={{ backgroundColor: "#13162D" }}
               >
                 {!img ? (
-                  <img src="/bg.png" alt="bgimg" />
+                  <div className="relative flex items-center justify-center sm:w-48 lg:w-64 w-[20vw] overflow-hidden h-[15vh] lg:h-[20vh] mb-5 bg-gray-300 rounded-lg  animate-pulse">
+                    <div className="absolute w-full h-full rounded-lg bg-gray-400"></div>
+                  </div>
                 ) : (
                   <img
                     src={img}
@@ -107,7 +109,11 @@ const RecentProjects = (projects: PostProps) => {
               href={`/specify/${projects.id}/${projects.name}`}
               target="_blank"
             >
-              Tiêu đề: {projects.title}
+              {!projects.title ? (
+                <div className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2 bg-gray-300 w-full h-4 mb-2 animate-pulse"></div>
+              ) : (
+                <div>Tiêu đề: {projects.title}</div>
+              )}
             </a>
             <a
               className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
@@ -118,7 +124,11 @@ const RecentProjects = (projects: PostProps) => {
               href={`/specify/${projects.id}/${projects.name}`}
               target="_blank"
             >
-              Mô tả: {projects.description}
+              {!projects.description ? (
+                <div className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2 bg-gray-300 w-full h-4 mb-2 animate-pulse"></div>
+              ) : (
+                <div>Mô tả: {projects.description}</div>
+              )}
             </a>
             <a
               className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
@@ -129,7 +139,11 @@ const RecentProjects = (projects: PostProps) => {
               href={`/specify/${projects.id}/${projects.name}`}
               target="_blank"
             >
-              Tác giả: {projects.author}
+              {!projects.author ? (
+                <div className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2 bg-gray-300 w-full h-4 mb-2 animate-pulse"></div>
+              ) : (
+                <div>Tác giả: {projects.author}</div>
+              )}
             </a>
             <a
               className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
@@ -140,8 +154,15 @@ const RecentProjects = (projects: PostProps) => {
               href={`/specify/${projects.id}/${projects.name}`}
               target="_blank"
             >
-              Ngày đăng tải{" "}
-              {new Date(projects.date_created).toLocaleDateString()}
+              {!projects.date_created ? (
+                <div className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2 bg-gray-300 w-full h-4 mb-2 animate-pulse"></div>
+              ) : (
+                <div>
+                  {" "}
+                  Ngày đăng tải{" "}
+                  {new Date(projects.date_created).toLocaleDateString()}
+                </div>
+              )}
             </a>
 
             <a
