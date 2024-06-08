@@ -28,14 +28,13 @@ const ScrollToTopButton = () => {
 
   return (
     <div
-      className={`fixed top-20 right-1/2 translate-x-1/2 lg:top-[calc(100%-3.5rem)] lg:right-6 lg:translate-x-0 ${
-        showButton
-          ? "opacity-100 pointer-events-auto"
-          : "opacity-0 pointer-events-none"
-      } transition-opacity duration-300 z-50 `}
+      className={`fixed top-[calc(100%-3.5rem)] right-6 ${showButton
+        ? "opacity-100 pointer-events-auto"
+        : "opacity-0 pointer-events-none"
+        } transition-opacity duration-300 z-50 `}
     >
       <button
-        className="bg-black/50 hover:bg-black text-white font-bold p-2 rounded-full outline outline-[3px] outline-white"
+        className="bg-[#EE0033] hover:bg-red-600 text-white font-bold p-2 rounded-full border-2 border-white"
         onClick={scrollToTop}
       >
         <FaChevronUp />

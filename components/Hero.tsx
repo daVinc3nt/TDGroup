@@ -5,9 +5,9 @@ import Image from "next/image";
 import "react-multi-carousel/lib/styles.css";
 import MagicButton from "./MagicButton";
 import { Spotlight } from "./ui/Spotlight";
-import { TextGenerateEffect } from "./ui/TextGenerateEffect";
 import Carousel from "react-multi-carousel";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { TextGenerateEffect } from "@/app/(dashboard)/career/components/text";
 const Hero = () => {
   const handleButtonClick = () => {
     const heightInput = document.getElementById("career");
@@ -27,8 +27,17 @@ const Hero = () => {
        *  UI: Spotlights
        *  Link: https://ui.aceternity.com/components/spotlight
        */}
-
-
+      <div>
+        <Spotlight
+          className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen"
+          fill="white"
+        />
+        <Spotlight
+          className="h-[80vh] w-[50vw] top-10 left-full"
+          fill="red"
+        />
+        <Spotlight className="left-80 top-28 h-[80vh] w-[50vw]" fill="pink" />
+      </div>
 
       {/**
        *  UI: grid

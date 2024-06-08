@@ -2,20 +2,20 @@ import React from "react";
 
 const ButtonLink = ({ href, buttonText }) => {
 
-    const handleClick = () => {
-        const targetElement = document.querySelector(href);
-        if (targetElement) {
-        const offsetTop = targetElement.offsetTop;
-        window.scrollTo({
-            top: offsetTop - 150,
-            behavior: "smooth",
-        });
-        }
-    };
+  const handleClick = () => {
+    const targetElement = document.querySelector(href);
+    if (targetElement) {
+      const offsetTop = targetElement.offsetTop;
+      window.scrollTo({
+        top: offsetTop - 150,
+        behavior: "smooth",
+      });
+    }
+  };
 
-    return (
+  return (
     <button
-      className="relative inline-flex items-center justify-center p-4 px-6 py-3 mb-2 overflow-hidden font-medium text-white transition duration-300 ease-out border-2 border-white rounded-full shadow-md group mx-2 max-h-12"
+      className="relative inline-flex items-center justify-center p-4 px-6 py-3 mb-2 overflow-hidden font-medium text-gray-800 transition duration-300 ease-out border-2 border-gray-400 rounded-full group mx-2 max-h-12"
       onClick={handleClick}
     >
       <span className="absolute inset-0 flex items-center justify-center w-full h-full text-black duration-300 -translate-x-full bg-white group-hover:translate-x-0 ease">
@@ -34,7 +34,7 @@ const ButtonLink = ({ href, buttonText }) => {
           ></path>
         </svg>
       </span>
-      <span className="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform group-hover:translate-x-full ease text-sm">
+      <span className="absolute flex items-center justify-center w-full h-full text-gray-800 transition-all duration-300 transform group-hover:translate-x-full ease text-sm">
         {buttonText}
       </span>
       <span className="relative invisible text-sm">{buttonText}</span>

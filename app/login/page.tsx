@@ -62,6 +62,7 @@ const AuthPage: FC<Props> = () => {
     setModal(false);
     if (!error) {
       route.push("/specify");
+      route.push("/specify");
     } else setError(false);
   };
 

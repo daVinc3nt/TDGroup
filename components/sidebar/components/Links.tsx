@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { motion, Variants } from "framer-motion";
 import DashIcon from "@/components/icons/DashIcon";
 import routes from "@/data/routes";
+import { useUserContext } from "@/providers/LoggedInProvider";
 
 type Props = {
   onClickRoute?: (e: MouseEvent<HTMLElement>) => any | any
@@ -18,6 +19,7 @@ const linkVariants: Variants = {
 export function SidebarLinks({ onClickRoute }: Props) {
   const pathname = usePathname();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const { loggedIn, setLoggedIn } = useUserContext()
   useEffect(() => {
     const findActiveRouteIndex = () => {
       for (let i = 0; i < routes.length; i++) {
@@ -40,8 +42,8 @@ export function SidebarLinks({ onClickRoute }: Props) {
   };
 
   const createLinks = (routes: any) => {
-    const toolRoutes = routes.filter((route: { path: string; }) => route.path !== "news" && route.path !== "write");
-    const managementRoutes = routes.filter((route: { path: string; }) => route.path === "news" || route.path === "write");
+    const toolRoutes = routes.filter((route: { path: string; }) => route.path !== "news" && route.path !== "specify");
+    const managementRoutes = routes.filter((route: { path: string; }) => route.path === "news" || (route.path === "specify" && loggedIn));
 
     return (
       <>
