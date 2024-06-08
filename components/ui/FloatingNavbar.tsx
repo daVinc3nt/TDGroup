@@ -144,11 +144,20 @@ export const FloatingNav = ({
                           <button
                             className="block w-full px-4 py-2 text-left text-sm text-neutral-600 hover:bg-gray-100 whitespace-nowrap"
                             onClick={() => {
-                              router.push("/write");
+                              router.push("/login");
                               setDropdownOpen(false);
                             }}
                           >
                             Đăng tin tức
+                          </button>
+                          <button
+                            className="block w-full px-4 py-2 text-left text-sm text-neutral-600 hover:bg-gray-100 whitespace-nowrap"
+                            onClick={() => {
+                              router.push("/write");
+                              setDropdownOpen(false);
+                            }}
+                          >
+                            Xem tin tức
                           </button>
                         </div>
                       </motion.div>

@@ -85,6 +85,9 @@
   }
 }
 
+img {
+  @apply flex justify-center items-center;
+}
 
 @layer utilities {
   .heading {

@@ -121,7 +121,7 @@ const Hero = () => {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="uppercase tracking-widest text-xs text-center md:text-left text-gray-800 w-full"
           >
-            TDLogistics - Thật tuyệt khi được là chính mình
+            TD Group - Thật tuyệt khi được là chính mình
           </motion.p>
           <TextGenerateEffect
             words="NGÀNH NGHỀ"

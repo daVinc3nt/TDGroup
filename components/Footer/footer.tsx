@@ -62,17 +62,17 @@ export default function Footer() {
                 </h6>
                 <ul className="list-disc marker:text-white">
                   <li className="mb-1">
-                    <Link href="https://tdlogistics.net.vn" className="hover:stext-gray-400 text-gray-100 transition duration-150 ease-in-out">
+                    <Link href="https://TD Group.net.vn" className="hover:stext-gray-400 text-gray-100 transition duration-150 ease-in-out">
                       {'Footer.block2.line2'}
                     </Link>
                   </li>
                   <li className="mb-1">
-                    <Link href="https://delivery.tdlogistics.net.vn" className="hover:stext-gray-400 text-gray-100 transition duration-150 ease-in-out">
+                    <Link href="https://delivery.TD Group.net.vn" className="hover:stext-gray-400 text-gray-100 transition duration-150 ease-in-out">
                       {'Footer.block2.line3'}
                     </Link>
                   </li>
                   <li className="mb-1">
-                    <Link href="https://app.tdlogistics.net.vn" className="hover:stext-gray-400 text-gray-100 transition duration-150 ease-in-out">
+                    <Link href="https://app.TD Group.net.vn" className="hover:stext-gray-400 text-gray-100 transition duration-150 ease-in-out">
                       {'Footer.block2.line4'}
                     </Link>
                   </li>
@@ -147,7 +147,7 @@ export default function Footer() {
             </ul>
 
             {/* Copyrights note */}
-            <div className="text-gray-400 text-sm mr-4">&copy; TDLogistics.com. All rights reserved.</div>
+            <div className="text-gray-400 text-sm mr-4">&copy; TD Group.com. All rights reserved.</div>
 
           </div>
 

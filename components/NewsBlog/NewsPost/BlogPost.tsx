@@ -12,10 +12,10 @@ const bitter = Bitter({ subsets: ['latin'] });
 
 interface BlogPostProps {
   post: any;
-  info:any
+  info: any
 }
 
-const BlogPost: React.FC<BlogPostProps> = ({ post, info}) => {
+const BlogPost: React.FC<BlogPostProps> = ({ post, info }) => {
   const textIndex = useMotionValue(0);
   const texts = [info?.title];
   const baseText = useTransform(textIndex, (latest) => texts[latest] || "");
@@ -27,17 +27,17 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, info}) => {
   const isInView = useInView(refSec1, { once: true });
   const mainControls = useAnimation();
   const slideControls = useAnimation();
-  console.log("helo",info)
-// Create a new formatter object using Intl.DateTimeFormat
-    const formatter = new Intl.DateTimeFormat("vi-VN", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      timeZone: "Asia/Ho_Chi_Minh",
-    });
+  console.log("helo", info)
+  // Create a new formatter object using Intl.DateTimeFormat
+  const formatter = new Intl.DateTimeFormat("vi-VN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    timeZone: "Asia/Ho_Chi_Minh",
+  });
   useEffect(() => {
     animate(count, 180, {
       type: "tween",
@@ -78,10 +78,10 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, info}) => {
           <div
             onClick={() => router.push("/news")}
             className="active:scale-125 duration-300 h-fit w-fit p-3 rounded-full bg-red-400 text-white">
-					<FaArrowLeft className=" h-8 w-8" />
-				</div>
+            <FaArrowLeft className=" h-8 w-8" />
+          </div>
           <img src="/data/Logo_vertical.png" height={200} width={200}
-          className="col-start-3 justify-self-center pb-10" />
+            className="col-start-3 justify-self-center pb-10" />
         </div>
         <motion.article
           ref={refSec1}
@@ -96,69 +96,69 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, info}) => {
           <motion.section
             className="relative p-4  rounded-3xl h-full w-full">
             <div className="flex flex-col h-full w-full items-center border-b-2 border-gray-400 pb-2">
-                <span className="self-center pt-4 text-center">
-                  <motion.span className="font-bold text-4xl lg:text-4xl text-gray-800 hover:text-gray-600">
-                    {displayText}
-                  </motion.span>
-                  <CursorBlinker />
-                </span>
-                <motion.p 
+              <span className="self-center pt-4 text-center">
+                <motion.span className="font-bold text-4xl lg:text-4xl text-gray-800 hover:text-gray-600">
+                  {displayText}
+                </motion.span>
+                <CursorBlinker />
+              </span>
+              <motion.p
+                variants={{
+                  hidden: { opacity: 0, x: 20 },
+                  visible: { opacity: 1, x: 0 },
+                }}
+                initial="hidden"
+                animate={mainControls}
+                transition={{ duration: 0.7, delay: 0.35 }}
+                className="text-gray-800 hover:text-gray-600 text-center pr-2 text-lg">
+                - {formatter.format(new Date(info?.date_created))} -
+              </motion.p>
+              <div className="relative pb-2">
+                <motion.div
                   variants={{
                     hidden: { opacity: 0, x: 20 },
                     visible: { opacity: 1, x: 0 },
                   }}
                   initial="hidden"
                   animate={mainControls}
-                  transition={{ duration: 0.7, delay: 0.35 }}
-                  className="text-gray-800 hover:text-gray-600 text-center pr-2 text-lg">
-                  - {formatter.format(new Date(info?.date_created))} -
-                </motion.p>
-                <div className="relative pb-2">
-                  <motion.div 
-                    variants={{
-                      hidden: { opacity: 0, x: 20 },
-                      visible: { opacity: 1, x: 0 },
-                    }}
-                    initial="hidden"
-                    animate={mainControls}
-                    transition={{ duration: 0.7, delay: 0.45 }}
-                    className="relative font-semibold text-sm lg:text-xl text-center text-gray-700">
-                    {/* {post?.subtitle} */}
-                    {/* không có sub */}
-                  </motion.div>
-                </div>
+                  transition={{ duration: 0.7, delay: 0.45 }}
+                  className="relative font-semibold text-sm lg:text-xl text-center text-gray-700">
+                  {/* {post?.subtitle} */}
+                  {/* không có sub */}
+                </motion.div>
+              </div>
             </div>
           </motion.section>
-            <div className="p-4 pt-0 lg:p-6 lg:pt-0 rounded-lg h-full w-full justify-center">
-              <div className="w-full lg:px-6 py-4 lg:py-0 px-2">
-                <motion.div 
-                  variants={{
-                    hidden: { opacity: 0, x: 20 },
-                    visible: { opacity: 1, x: 0 },
-                  }}
-                  initial="hidden"
-                  animate={mainControls}
-                  transition={{ duration: 0.7, delay: 0.65 }}
-                  className="text-gray-800 w-full pt-2 lg:pt-0 text-justify  border-b-2 border-gray-400 pb-10"
-                  dangerouslySetInnerHTML={{ __html: post}}
-                  >
-                </motion.div>
-                <motion.div 
-                  variants={{
-                    hidden: { opacity: 0, x: 20 },
-                    visible: { opacity: 1, x: 0 },
-                  }}
-                  initial="hidden"
-                  animate={mainControls}
-                  transition={{ duration: 0.7, delay: 0.85 }}
-                  className="flex w-full justify-center lg:justify-end mt-4">
-                  <div className="flex gap-2 items-center justify-center px-4">
-                    <img src="/data/SunGlass.jpg" height={100} width={100} className="rounded-full"/>
-                    <span className="text-gray-800 text-xl">{info.author || "No Name"}</span>                   
-                    {/* không có name */}
-                  </div>
-                  {/* không có author.img  */}
-                  {/* {post.author.img && (
+          <div className="p-4 pt-0 lg:p-6 lg:pt-0 rounded-lg h-full w-full justify-center">
+            <div className="w-full lg:px-6 py-4 lg:py-0 px-2">
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 20 },
+                  visible: { opacity: 1, x: 0 },
+                }}
+                initial="hidden"
+                animate={mainControls}
+                transition={{ duration: 0.7, delay: 0.65 }}
+                className="text-gray-800 w-full pt-2 lg:pt-0 text-justify  border-b-2 border-gray-400 pb-10"
+                dangerouslySetInnerHTML={{ __html: post }}
+              >
+              </motion.div>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 20 },
+                  visible: { opacity: 1, x: 0 },
+                }}
+                initial="hidden"
+                animate={mainControls}
+                transition={{ duration: 0.7, delay: 0.85 }}
+                className="flex w-full justify-center lg:justify-end mt-4">
+                <div className="flex gap-2 items-center justify-center px-4">
+                  <img src="/data/SunGlass.jpg" height={100} width={100} className="rounded-full" />
+                  <span className="text-gray-800 text-xl">{info.author || "No Name"}</span>
+                  {/* không có name */}
+                </div>
+                {/* không có author.img  */}
+                {/* {post.author.img && (
                     <Image
                       src={post.author.img}
                       width={45}
@@ -167,10 +167,10 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, info}) => {
                       alt={`Profile picture of ${post.author.name}`}
                     />
                   )} */}
-                  {/* không có author.name */}
-                </motion.div>
-              </div>
+                {/* không có author.name */}
+              </motion.div>
             </div>
+          </div>
         </motion.article>
       </div>
     </>

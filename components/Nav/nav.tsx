@@ -26,7 +26,7 @@ const Navbar = () => {
       submenu: [
         {
           title: intl.formatMessage({ id: 'NavBar.serv.subroute1' }),
-          url: "https://app.tdlogistics.net.vn",
+          url: "https://app.TD Group.net.vn",
         },
         {
           title: intl.formatMessage({ id: 'NavBar.serv.subroute2' }),
@@ -41,7 +41,7 @@ const Navbar = () => {
       submenu: [
         {
           title: intl.formatMessage({ id: 'NavBar.enroll.subroute1' }),
-          url: "https://delivery.tdlogistics.net.vn", //this will be connect to another url driver website
+          url: "https://delivery.TD Group.net.vn", //this will be connect to another url driver website
         },
         {
           title: intl.formatMessage({ id: 'NavBar.enroll.subroute2' }),
@@ -54,7 +54,7 @@ const Navbar = () => {
       url: "/info",
       submenu: [
         {
-          title:  intl.formatMessage({ id: 'NavBar.info.subroute1' }),
+          title: intl.formatMessage({ id: 'NavBar.info.subroute1' }),
           url: "/news",
         },
         {
@@ -85,12 +85,12 @@ const Navbar = () => {
       >
         <div className=" max-w-[1240px] m-auto flex shadow-2xl bg-white rounded-xl justify-between items-center text-black px-2">
           <Link href="/">
-          <Image
-            src="/Logo_name.png"
-            width={225}
-            height={50}
-            alt="Picture of the author"
-          />
+            <Image
+              src="/Logo_name.png"
+              width={225}
+              height={50}
+              alt="Picture of the author"
+            />
           </Link>
           <ul style={{ color: `${textColor}` }} className="hidden lg:flex gap-5">
             {menuItemsData.map((menu, index) => {
@@ -98,14 +98,14 @@ const Navbar = () => {
             })}
           </ul>
           <div className="flex items-center">
-            <LangSelector IconColor={textColor}/>
-            <MenuHambuger IconColor={textColor} toggle ={handleSidebarToggleMobile}/>
+            <LangSelector IconColor={textColor} />
+            <MenuHambuger IconColor={textColor} toggle={handleSidebarToggleMobile} />
           </div>
         </div>
       </div>
       <div className="block lg:hidden">
         <div className="inset-0 bottom-0 left-0 right-0 bg-black/70 z-50">
-        <Sidebar menuItems={menuItemsData} toggleCollapseMobile={toggleCollapseMobile} />
+          <Sidebar menuItems={menuItemsData} toggleCollapseMobile={toggleCollapseMobile} />
         </div>
       </div>
     </>

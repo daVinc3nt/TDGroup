@@ -8,7 +8,7 @@ import RecentProjects from "@/components/RecentProjects";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Sidebar from "@/components/sidebar";
 import Hero from "@/components/Hero/Hero";
-
+const session = null
 const Home = () => {
   return (
     <section className="flex w-full h-full">
