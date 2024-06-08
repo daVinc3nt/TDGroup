@@ -43,7 +43,7 @@ export function SidebarLinks({ onClickRoute }: Props) {
 
   const createLinks = (routes: any) => {
     const toolRoutes = routes.filter((route: { path: string; }) => route.path !== "news" && route.path !== "specify");
-    const managementRoutes = routes.filter((route: { path: string; }) => route.path === "news" || (route.path === "specify" && loggedIn));
+    const managementRoutes = routes.filter((route: { path: string; }) => route.path === "news" || (route.path === "specify"));
 
     return (
       <>
@@ -92,7 +92,7 @@ export function SidebarLinks({ onClickRoute }: Props) {
           ))}
         </div>
         <div>
-          <p className={`${activeIndex != null && activeIndex >= toolRoutes.length ? "" : "text-gray-600"} font-semibold mb-2 pl-5 pt-2`}>Tin tức</p>
+          <p className={`${activeIndex != null && activeIndex >= toolRoutes.length ? "" : "text-gray-600"} font-semibold mb-2 pl-5 pt-2`}>Thư viện</p>
           {managementRoutes.map((route: any, index: number) => {
             const managementIndex = index + toolRoutes.length;
             return (

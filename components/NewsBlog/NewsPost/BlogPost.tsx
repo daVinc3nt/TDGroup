@@ -2,11 +2,14 @@
 import { useEffect, useRef, useState } from 'react';
 import CursorBlinker from './CursorBlinker';
 import { animate, motion, useAnimation, useInView, useMotionValue, useTransform } from 'framer-motion';
-import Image from 'next/image';
 import { Bitter } from 'next/font/google';
 import ScrollToTopButton from '@/components/NewsBlog/ScrollToTop';
 import { FaArrowLeft } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
+import { Quill } from 'react-quill';
+import "quill/dist/quill.snow.css";
+import ImageResize from "quill-image-resize-module-react";
+Quill.register("modules/imageResize", ImageResize);
 
 const bitter = Bitter({ subsets: ['latin'] });
 
@@ -27,7 +30,8 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, info }) => {
   const isInView = useInView(refSec1, { once: true });
   const mainControls = useAnimation();
   const slideControls = useAnimation();
-  console.log("helo", info)
+  const [editorContent, setEditorContent] = useState("");
+  console.log("Quang", post)
   // Create a new formatter object using Intl.DateTimeFormat
   const formatter = new Intl.DateTimeFormat("vi-VN", {
     year: "numeric",
@@ -38,6 +42,43 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, info }) => {
     second: "numeric",
     timeZone: "Asia/Ho_Chi_Minh",
   });
+
+  const quillRef = useRef<any | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+
+    if (typeof window === "undefined") return;
+    if (editorRef.current && !quillRef.current) {
+      quillRef.current = new Quill(editorRef.current, {
+        theme: "snow",
+        readOnly: true,
+        modules: {
+          toolbar: false,
+          imageResize: {
+            parchment: Quill.import("parchment"),
+            modules: ["Resize", "DisplaySize"],
+            displayStyles: {
+              backgroundColor: "black",
+              border: "none",
+              color: "white",
+              align: "center",
+              margin: "0px",
+            },
+          },
+        },
+      });
+
+      // Set the default content
+      quillRef.current.clipboard.dangerouslyPasteHTML(post);
+      console.log("Initialized Quill", quillRef.current);
+      quillRef.current.on("text-change", function (delta, oldDelta, source) {
+        if (source === "user") {
+          setEditorContent(quillRef.current.root.innerHTML);
+        }
+      });
+    }
+  }, [post]);
+
   useEffect(() => {
     animate(count, 180, {
       type: "tween",
@@ -94,7 +135,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, info }) => {
           transition={{ duration: 0.7, delay: 0.25 }}
           className='bg-white  shadow-xl rounded-3xl min-h-[650px]'>
           <motion.section
-            className="relative p-4  rounded-3xl h-full w-full">
+            className="relative p-4  rounded-3xl h-fit w-full">
             <div className="flex flex-col h-full w-full items-center border-b-2 border-gray-400 pb-2">
               <span className="self-center pt-4 text-center">
                 <motion.span className="font-bold text-4xl lg:text-4xl text-gray-800 hover:text-gray-600">
@@ -140,7 +181,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, info }) => {
                 animate={mainControls}
                 transition={{ duration: 0.7, delay: 0.65 }}
                 className="text-gray-800 w-full pt-2 lg:pt-0 text-justify  border-b-2 border-gray-400 pb-10"
-                dangerouslySetInnerHTML={{ __html: post }}
+                ref={editorRef}
               >
               </motion.div>
               <motion.div

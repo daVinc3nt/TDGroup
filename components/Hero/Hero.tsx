@@ -7,6 +7,7 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import ParticlesBackground from "../Particle";
+import { Spotlight } from "../ui/Spotlight";
 interface Props {
   heading: string;
   message: string;
@@ -25,6 +26,17 @@ const Hero = ({ heading, message }: Props) => {
 
     <div className="flex items-center justify-center h-screen ">
       <div className="text-white bg-black-100 w-screen h-screen p-10 justify-center items-center flex flex-col sm:flex-row gap-10">
+        <div>
+          <Spotlight
+            className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen"
+            fill="white"
+          />
+          <Spotlight
+            className="h-[80vh] w-[50vw] top-10 left-full"
+            fill="red"
+          />
+          <Spotlight className="left-80 top-28 h-[80vh] w-[50vw]" fill="pink" />
+        </div>
         <Player
           src='/animation/techNet.json'
           loop

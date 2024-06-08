@@ -24,7 +24,7 @@ const routes = [
     icon: <BsFileEarmarkPerson className="h-5 w-5 ml-0.5" />,
   },
   {
-    name: "Tin tức & sự kiện",
+    name: "Bài viết",
     layout: "/dashboard",
     path: "news",
     icon: <FaRegNewspaper className="h-5 w-5 ml-0.5" />,

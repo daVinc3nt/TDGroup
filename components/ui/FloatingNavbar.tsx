@@ -26,9 +26,9 @@ export const FloatingNav = ({
   const { scrollYProgress } = useScroll();
   const navItems = [
     { name: "Về chúng tôi", link: "/" },
-    { name: "Dự án", link: "#projects" },
+    { name: "Dự án", link: "/#projects" },
     { name: "Ngành nghề", link: "/career" },
-    { name: "Tin tức", link: "/news", hasDropdown: role == "ADMIN" ? true : false },
+    { name: "Tin tức", link: "/news", hasDropdown: true },
   ];
   const { searchTitle, setSearchTitle } = useSearchContext();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -68,7 +68,7 @@ export const FloatingNav = ({
 
   const checkLoggedIn = async () => {
     const response = await getSession()
-    setLoggedIn(response.request.withCredentials)
+    setLoggedIn(response.data)
   }
 
   useEffect(() => {
@@ -134,7 +134,7 @@ export const FloatingNav = ({
           </span>
         </div>
         <div className="pb-1 md:pr-12 h-10 relative w-[calc(100%-30px)] md:w-60">
-          <Image src="/Logo_horizontal.png" alt="Your image" layout="fill" objectFit="contain" />
+          <Image src="/img/logo/logo_ngang.png" alt="Your image" layout="fill" objectFit="contain" />
         </div>
         <div className="hidden md:flex items-center justify-center space-x-4 border-r-2 w-full border-gray-300/30 h-10">
           {navItems.map((navItem, idx) => (
@@ -147,17 +147,16 @@ export const FloatingNav = ({
               >
                 <span className="text-sm !cursor-pointer">{navItem.name}</span>
               </Link>}
-              {navItem.hasDropdown && role === "ADMIN" && (
+              {navItem.hasDropdown && (
                 <div ref={dropdownRef}>
                   <button
                     onMouseEnter={() => setDropdownOpen(true)}
-                    onClick={() => router.push("/news")}
                     className="relative items-center flex space-x-1 text-neutral-600 hover:text-neutral-500"
                   >
-                    <span className="text-sm !cursor-pointer">Tin tức</span>
+                    <span className="text-sm !cursor-pointer">Thư viện</span>
                   </button>
                   <AnimatePresence>
-                    {dropdownOpen && loggedIn && (
+                    {dropdownOpen && (
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -173,16 +172,16 @@ export const FloatingNav = ({
                               setDropdownOpen(false);
                             }}
                           >
-                            Đăng tin tức
+                            Đăng bài viết
                           </button>
                           <button
                             className="block w-full px-4 py-2 text-left text-sm text-neutral-600 hover:bg-gray-100 whitespace-nowrap"
                             onClick={() => {
-                              router.push("/write");
+                              router.push("/news");
                               setDropdownOpen(false);
                             }}
                           >
-                            Xem tin tức
+                            Xem bài viết
                           </button>
                         </div>
                       </motion.div>
