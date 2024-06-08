@@ -1,6 +1,7 @@
 "use client";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Sidebar from "@/components/sidebar";
+import SearchProvider from "@/providers/SearchProvider";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -11,7 +12,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 {children}
             </main>
         </section>
-
     );
 };
 

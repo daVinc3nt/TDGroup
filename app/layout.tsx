@@ -5,6 +5,8 @@ import "./globals.css";
 import { ThemeProvider } from "./provider";
 import SidebarProvider from "@/providers/SidebarProvider";
 import ParticlesBackground from "@/components/Particle";
+import SearchProvider from "@/providers/SearchProvider";
+import UserProvider from "@/providers/LoggedInProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,10 +32,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         > */}
-        <SidebarProvider>
-          {children}
-        </SidebarProvider>
-        {/* </ThemeProvider> */}
+        <UserProvider>
+          <SidebarProvider>
+            <SearchProvider>
+              {children}
+            </SearchProvider>
+
+          </SidebarProvider>
+          {/* </ThemeProvider> */}
+        </UserProvider>
       </body>
     </html>
   );

@@ -32,7 +32,7 @@ const routes = [
   {
     name: "Đăng bài",
     layout: "/dashboard",
-    path: "write",
+    path: "specify",
     icon: <CiBookmarkPlus className="h-6 w-6" />,
   },
 ];

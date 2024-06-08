@@ -56,9 +56,14 @@ const CareerPage = () => {
         };
     }, [controls1, controls2]);
 
+    const sectionVariants2 = {
+        hidden: { opacity: 0, x: 50 },
+        visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+    };
+
     const sectionVariants = {
-        hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+        hidden: { opacity: 0, x: -50 },
+        visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
     };
 
     return (
@@ -71,7 +76,7 @@ const CareerPage = () => {
                     ref={section1Ref}
                     initial="hidden"
                     animate={controls1}
-                    variants={sectionVariants}
+                    variants={sectionVariants2}
                     className="text-white flex place-items-center justify-center py-[10px] h-full flex-col md:flex-row">
                     <div className="text-center md:text-left md:w-2/3 px-10 md:px-20 flex flex-col justify-between h-full py-6 md:py-32 w-full">
                         <div>

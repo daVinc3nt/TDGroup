@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   motion,
   AnimatePresence,
@@ -12,6 +12,9 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { FiAlignJustify, FiSearch } from "react-icons/fi";
 import { useSidebarContext } from "@/providers/SidebarProvider";
+import { useSearchContext } from "@/providers/SearchProvider";
+import { useUserContext } from "@/providers/LoggedInProvider";
+import { getSession } from "@/lib/main";
 
 export const FloatingNav = ({
   className,
@@ -27,18 +30,31 @@ export const FloatingNav = ({
     { name: "Ngành nghề", link: "/career" },
     { name: "Tin tức", link: "/news", hasDropdown: role == "ADMIN" ? true : false },
   ];
-  const [search, setSearch] = useState("");
+  const { searchTitle, setSearchTitle } = useSearchContext();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { openSidebar, setOpenSidebar } = useSidebarContext()
+  const pathname = usePathname()
   const handleSearch = () => {
-    if (search == "") return;
-    //@ts-ignore
-    window.find(search);
+    if (pathname === "/news") handleButtonClick();
+    else { router.push("/news"); handleButtonClick() };
   };
+  const handleButtonClick = () => {
+    const heightInput = document.getElementById("posts");
+    if (heightInput) {
+      const elementPosition = heightInput.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - 100;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+  const { loggedIn, setLoggedIn } = useUserContext()
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     if (typeof current === "number") {
       let direction = current - scrollYProgress.getPrevious();
@@ -49,6 +65,11 @@ export const FloatingNav = ({
       }
     }
   });
+
+  const checkLoggedIn = async () => {
+    const response = await getSession()
+    setLoggedIn(response.request.withCredentials)
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -80,6 +101,10 @@ export const FloatingNav = ({
     return () => {
       document.removeEventListener("mousedown", handleDocumentClick);
     };
+  }, []);
+
+  useEffect(() => {
+    checkLoggedIn()
   }, []);
 
   return (
@@ -126,13 +151,13 @@ export const FloatingNav = ({
                 <div ref={dropdownRef}>
                   <button
                     onMouseEnter={() => setDropdownOpen(true)}
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    onClick={() => router.push("/news")}
                     className="relative items-center flex space-x-1 text-neutral-600 hover:text-neutral-500"
                   >
                     <span className="text-sm !cursor-pointer">Tin tức</span>
                   </button>
                   <AnimatePresence>
-                    {dropdownOpen && (
+                    {dropdownOpen && loggedIn && (
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -144,7 +169,7 @@ export const FloatingNav = ({
                           <button
                             className="block w-full px-4 py-2 text-left text-sm text-neutral-600 hover:bg-gray-100 whitespace-nowrap"
                             onClick={() => {
-                              router.push("/write");
+                              router.push("/specify");
                               setDropdownOpen(false);
                             }}
                           >
@@ -179,11 +204,11 @@ export const FloatingNav = ({
               />
             </motion.button>
             <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={searchTitle}
+              onChange={(e) => setSearchTitle(e.target.value)}
               type="text"
               placeholder={"Tìm kiếm..."}
-              className={`block h-full w-full rounded-full bg-lightPrimary text-sm text-black font-medium text-navy-700 outline-none placeholder:!text-gray-400 transition-all duration-500 ${isSearchFocused ? "pl-4 pr-6" : "pl-10"
+              className={`block h-full w-full rounded-full bg-lightPrimary text-sm text-black font-medium text-navy-700 outline-none placeholder:!text-gray-400 transition-all duration-500 ${isSearchFocused ? "pl-4 pr-12" : "pl-10"
                 }`}
             />
           </div>

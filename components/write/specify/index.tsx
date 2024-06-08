@@ -124,14 +124,7 @@ export default function Writing2() {
       );
     }
   }
-  const login2 = async () => {
-    try {
-      await login("tdadmin", "tdadmin");
-      // console.log(response);
-    } catch (error) {
-      // console.log(error);
-    }
-  };
+
   const handleChangeType = async (e: number) => {
     setSearchType(e);
   };
@@ -153,16 +146,6 @@ export default function Writing2() {
             Trở về
           </span>
         </a>
-        <button
-          className="absolute bg-blue left-5 top-10
-        border  border-neutral-200  
-         inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white  focus:ring-4 focus:outline-none focus:ring-green-200    "
-          onClick={login2}
-        >
-          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
-            Login
-          </span>
-        </button>
       </div>
       {isCreating && (
         <CreatePopUp onClose={onClose2} reFetch={handlefetchPost} />
@@ -386,11 +369,10 @@ ${error ? "border-red-500" : "border-gray-300"}
                   (_, i) => startPage + i
                 ).map((pageNumber) => (
                   <button
-                    className={`${
-                      currentPage == pageNumber
-                        ? "rounded-full px-4 py-2 bg-white text-gray-600"
-                        : "rounded-full px-4 py-2 hover:bg-white hover:text-gray-600 transition duration-300 ease-in-out"
-                    } `}
+                    className={`${currentPage == pageNumber
+                      ? "rounded-full px-4 py-2 bg-white text-gray-600"
+                      : "rounded-full px-4 py-2 hover:bg-white hover:text-gray-600 transition duration-300 ease-in-out"
+                      } `}
                     key={pageNumber}
                     onClick={() => paginate(pageNumber)}
                   >

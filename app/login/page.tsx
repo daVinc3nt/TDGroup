@@ -48,11 +48,11 @@ const AuthPage: FC<Props> = () => {
     // }
     const response = await login(account, password)
     if (!response.error) {
-      setMessage("Đăng nhập thất bại.");
+      setMessage("Đăng nhập thành công");
       setModal(true)
     } else {
       setError(true)
-      setMessage("Đăng nhập thành công")
+      setMessage("Đăng nhập thất bại")
       setModal(true)
     }
     setLoading(false)
@@ -61,7 +61,7 @@ const AuthPage: FC<Props> = () => {
   const handleNotificationClose = async () => {
     setModal(false);
     if (!error) {
-      route.push("/write");
+      route.push("/specify");
     } else setError(false);
   };
 
